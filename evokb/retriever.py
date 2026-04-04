@@ -145,8 +145,13 @@ EVALUATION_CRITERIA:
         return None
 
 
-def compile_to_wiki(raw_path: Path) -> str:
+def compile_to_wiki(raw_path: Path, wiki_dir: Path = None) -> str:
     content = read_file(raw_path)
+    if wiki_dir is None:
+        wiki_dir = WIKI_DIR
+
+    wiki_dir = Path(wiki_dir)
+    wiki_dir.mkdir(exist_ok=True)
 
     prompt = f"""You are an expert research librarian.
 Turn the following raw document into a clean, structured Markdown wiki page.
@@ -163,7 +168,14 @@ Raw content:
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,
     )
-    return response.choices[0].message.content
+    wiki_content = response.choices[0].message.content
+
+    # Save to wiki
+    output_file = wiki_dir / raw_path.name
+    output_file.write_text(wiki_content)
+    print(f"Saved wiki page: {output_file}")
+
+    return wiki_content
 
 
 def query_evo_kb(query: str, wiki_dir: Path = None):
