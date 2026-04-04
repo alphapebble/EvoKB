@@ -5,3 +5,4 @@ pytest
 beautifulsoup4
 trafilatura
 requests
+duckdb
