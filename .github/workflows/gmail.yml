@@ -1,0 +1,51 @@
+name: EvoKB - Gmail Ingest
+
+on:
+  workflow_dispatch:
+    inputs:
+      labels:
+        description: 'Gmail labels (comma-separated)'
+        default: 'newsletter,tech'
+        required: false
+      max_results:
+        description: 'Max emails to fetch'
+        default: '50'
+        required: false
+
+jobs:
+  gmail-ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set up Gmail credentials
+        env:
+          GMAIL_CREDENTIALS: ${{ secrets.GMAIL_CREDENTIALS }}
+        run: |
+          if [ -z "$GMAIL_CREDENTIALS" ]; then
+            echo "No Gmail credentials configured"
+            echo "Set GMAIL_CREDENTIALS secret with OAuth token"
+            exit 0
+          fi
+          echo "$GMAIL_CREDENTIALS" > token.json
+
+      - name: Run Gmail ingest
+        env:
+          LABELS: ${{ github.event.inputs.labels }}
+          MAX: ${{ github.event.inputs.max_results }}
+        run: |
+          python scripts/gmail_ingest.py --labels "$LABELS" --max $MAX || echo "Gmail ingest skipped"
+
+      - name: Commit new raw data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Ingest: new emails from Gmail"
+          file_pattern: raw/*

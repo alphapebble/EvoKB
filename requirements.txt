@@ -7,3 +7,4 @@ trafilatura
 requests
 duckdb
 sqlalchemy
+google-api-python-client
