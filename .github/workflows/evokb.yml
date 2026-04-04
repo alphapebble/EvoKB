@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -24,11 +25,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Start Ollama
-        run: |
-          docker run -d --name ollama -p 11434:11434 ollama/ollama:latest || true
-          sleep 30
-          docker exec ollama pull llama3.2 || true
+      - name: Restore wiki from git
+        run: git checkout HEAD -- wiki/
 
       - name: Run full tests
         run: python -m pytest tests/ -q --tb=short
@@ -54,6 +52,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -63,11 +62,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Start Ollama
-        run: |
-          docker run -d --name ollama -p 11434:11434 ollama/ollama:latest || true
-          sleep 30
-          docker exec ollama pull llama3.2 || true
+      - name: Restore wiki from git
+        run: git checkout HEAD -- wiki/
 
       - name: Run autoreview loop
         run: python run_autoreview.py --iterations 2
