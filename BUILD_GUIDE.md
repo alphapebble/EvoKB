@@ -52,6 +52,7 @@ A step-by-step roadmap to building a next-gen "RAG replacement" / context-engine
 - **"RAG is Not Enough"** — Why embeddings fail, chunking problems, stale indexes
 
 ### Search Fundamentals
+- **Tantivy** — Fast full-text search engine (Rust)
 - **BM25 Explained** — Better than naive keyword search
 - **Introduction to Information Retrieval** — Ranking, indexing
 
@@ -143,6 +144,7 @@ context-engine/
 ## 🔗 Key Resources
 
 - [Karpathy: LLM Knowledge Base](https://github.com/karpathy/llm-agent-scaffold)
+- [Tantivy](https://github.com/quickwit-oss/tantivy) — Fast full-text search engine
 - [BM25 Algorithm](https://en.wikipedia.org/wiki/Okapi_BM25)
 - [ReAct Paper](https://arxiv.org/abs/2210.03629)
 - [Designing Data-Intensive Applications](https://dataintensive.net/)

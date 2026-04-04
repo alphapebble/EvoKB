@@ -90,7 +90,7 @@ print(answer)
 
 ## Roadmap
 
-- [ ] BM25 search integration
+- [ ] Tantivy search integration
 - [ ] Context builder layer
 - [ ] Agent classifier
 - [ ] FastAPI backend
