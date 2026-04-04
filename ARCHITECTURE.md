@@ -92,18 +92,23 @@ run_notion_ingest(database_id="...")
 
 ```
 evokb/
-├── __init__.py         # Lazy re-exports
+├── __init__.py         # Package init
+│
+├── api.py              # FastAPI server
 │
 ├── agents/             # Agent implementations
 │   ├── agent.py        # AgentClassifier
-│   └── librarian.py    # LibrarianAgent
+│   ├── librarian.py    # LibrarianAgent
+│   └── hermes.py      # Review gate
 │
 ├── core/               # Core functionality
 │   ├── search.py       # SearchIndex, search_kb
 │   ├── router.py       # Query routing
 │   ├── learning.py     # Learning feedback loop
 │   ├── retriever.py    # Query/compile wiki
-│   └── context.py      # Context building
+│   ├── context.py      # Context building
+│   ├── config.py      # Configuration
+│   └── utils.py       # Utilities
 │
 ├── connectors/        # External data sources
 │   ├── gmail.py       # Gmail API
@@ -114,33 +119,31 @@ evokb/
 │   └── schema_evolution.py  # Auto-schema
 │
 ├── memory/             # SQL memory
-│   └── memory.py       # MemoryStore (SQLite)
+│   └── cluster.py     # Knowledge clusters
 │
-├── hermes.py           # Review gate
-├── cluster.py         # Knowledge clusters
-├── config.py          # Configuration
-└── utils.py           # Utilities
+├── eval/               # Evaluation
+│   ├── eval.py        # Metrics
+│   └── evaluator.py   # Change scoring
+│
+└── reporting/          # Reporting
+    └── reporting.py   # Dashboard
 ```
 
 ## Usage
 
-```bash
+```python
+from evokb.core.retriever import query_evo_kb
+from evokb.core.search import search_kb, index_wiki
+from evokb.agents.librarian import run_safe_iteration
+
 # Query (auto-routes)
-python evokb_cli.py query "What is a knowledge graph"
-python evokb_cli.py query "What do I know about Sarah"
+answer, cluster = query_evo_kb("What is a knowledge graph")
 
 # Search
-python evokb_cli.py search "knowledge"
+results = search_kb("knowledge")
 
-# Add structured data
-python evokb_cli.py add-note "Met with Sarah" --persons Sarah --projects AI
-python evokb_cli.py add-person Sarah --company Acme --role CTO
-
-# View routing
-python evokb_cli.py route "What is X"
-
-# System stats
-python evokb_cli.py stats
+# Run librarian iteration
+run_safe_iteration()
 ```
 
 ## Privacy
