@@ -7,7 +7,9 @@ def read_file(path: Path) -> str:
     return ""
 
 
-def list_files(directory: Path, pattern="**/*.*"):
+def list_files(directory: Path, pattern="*.md"):
+    if "**" in pattern:
+        return list(directory.rglob(pattern.replace("**/", "").replace("**", "*")))
     return list(directory.glob(pattern))
 
 

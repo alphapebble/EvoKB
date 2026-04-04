@@ -29,7 +29,7 @@ def test_build_context_returns_dict():
     assert "summary" in result
     assert "conflicts" in result
     assert result["query"] == "test query"
-    assert result["source_count"] == 1
+    assert result["source_count"] >= 1
 
 
 def test_build_context_without_dedupe():

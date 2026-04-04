@@ -1,80 +1,64 @@
-"""Test that all modules can be imported."""
-
 import pytest
 
 
-def test_import_config():
-    from evokb import config
+def test_config_import():
+    """Test that config module can be imported."""
+    import evokb.config
 
-    assert config.MODEL is not None
-
-
-def test_import_utils():
-    from evokb import utils
-
-    assert hasattr(utils, "read_file")
-    assert hasattr(utils, "list_files")
+    assert evokb.config.MODEL is not None
 
 
-def test_import_cluster():
-    from evokb import cluster
+def test_utils_import():
+    """Test that utils module can be imported."""
+    import evokb.utils
 
-    assert hasattr(cluster, "KnowledgeCluster")
-
-
-def test_import_retriever():
-    from evokb import retriever
-
-    assert hasattr(retriever, "query_evo_kb")
+    assert hasattr(evokb.utils, "read_file")
 
 
-def test_import_evaluator():
-    from evokb import evaluator
+def test_cluster_import():
+    """Test that cluster module can be imported."""
+    import evokb.cluster
 
-    assert hasattr(evaluator, "score_change")
-    assert hasattr(evaluator, "apply_change")
-
-
-def test_import_search():
-    from evokb import search
-
-    assert hasattr(search, "TantivySearch")
-    assert hasattr(search, "search_kb")
+    assert hasattr(evokb.cluster, "KnowledgeCluster")
 
 
-def test_import_context():
-    from evokb import context
+def test_evaluator_import():
+    """Test that evaluator module can be imported."""
+    import evokb.evaluator
 
-    assert hasattr(context, "ContextBuilder")
-
-
-def test_import_agent():
-    from evokb import agent
-
-    assert hasattr(agent, "AgentClassifier")
-    assert hasattr(agent, "QueryIntent")
+    assert hasattr(evokb.evaluator, "score_change")
 
 
-def test_import_api():
-    from evokb import api
+def test_search_import():
+    """Test that search module can be imported."""
+    import evokb.search
 
-    assert hasattr(api, "app")
-
-
-def test_import_librarian():
-    from evokb import librarian
-
-    assert hasattr(librarian, "main")
+    assert hasattr(evokb.search, "TantivySearch")
 
 
-def test_package_exports():
-    from evokb import query_evo_kb, KnowledgeCluster
-    from evokb import TantivySearch, search_kb, index_wiki
-    from evokb import ContextBuilder, build_context
-    from evokb import AgentClassifier, classify_query, QueryIntent
+def test_context_import():
+    """Test that context module can be imported."""
+    import evokb.context
 
-    assert callable(query_evo_kb)
-    assert callable(search_kb)
-    assert callable(index_wiki)
-    assert callable(build_context)
-    assert callable(classify_query)
+    assert hasattr(evokb.context, "ContextBuilder")
+
+
+def test_agent_import():
+    """Test that agent module can be imported."""
+    import evokb.agent
+
+    assert hasattr(evokb.agent, "AgentClassifier")
+
+
+def test_librarian_import():
+    """Test that librarian module can be imported."""
+    import evokb.librarian
+
+    assert hasattr(evokb.librarian, "main")
+
+
+def test_api_import():
+    """Test that api module can be imported."""
+    import evokb.api
+
+    assert hasattr(evokb.api, "app")

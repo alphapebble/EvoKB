@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Union
 from pathlib import Path
 from litellm import completion
 
@@ -10,16 +10,28 @@ class ContextBuilder:
     def __init__(self, model: str = None):
         self.model = model or MODEL
 
-    def deduplicate(self, snippets: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _normalize_snippet(self, snippet: Union[str, Dict]) -> Dict[str, str]:
+        """Normalize snippet to dict format"""
+        if isinstance(snippet, str):
+            return {"content": snippet, "path": "unknown", "title": "unknown"}
+        return {
+            "content": snippet.get("content", snippet.get("snippet", "")),
+            "path": snippet.get("path", snippet.get("title", "unknown")),
+            "title": snippet.get("title", "unknown"),
+        }
+
+    def deduplicate(self, snippets: List[Union[str, Dict]]) -> List[Dict[str, Any]]:
         """Remove duplicate or near-duplicate content"""
         if not snippets:
             return []
 
+        normalized = [self._normalize_snippet(s) for s in snippets]
+
         prompt = f"""You are a deduplication assistant. Remove duplicate or near-duplicate content from the following snippets.
-Return ONLY a JSON array of unique snippets, each with 'content' and 'source' fields.
+Return ONLY a JSON array of unique snippets, each with 'content' and 'path' fields.
 
 Snippets:
-{snippets}
+{normalized}
 
 Output as JSON array:
 """
@@ -40,17 +52,19 @@ Output as JSON array:
         except:
             pass
 
-        return snippets
+        return [{"content": s["content"], "path": s["path"]} for s in normalized]
 
-    def summarize(self, snippets: List[Dict[str, Any]]) -> str:
+    def summarize(self, snippets: List[Union[str, Dict]]) -> str:
         """Generate a concise summary of the snippets"""
         if not snippets:
             return ""
 
+        normalized = [self._normalize_snippet(s) for s in snippets[:5]]
+
         content = "\n\n".join(
             [
-                f"Source: {s.get('path', s.get('title', 'unknown'))}\n{s.get('content', s.get('snippet', ''))}"
-                for s in snippets[:5]
+                f"Source: {s.get('path', s.get('title', 'unknown'))}\n{s.get('content', '')}"
+                for s in normalized
             ]
         )
 
@@ -74,14 +88,15 @@ Summary:
         except:
             return content[:500]
 
-    def detect_conflicts(self, snippets: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def detect_conflicts(
+        self, snippets: List[Union[str, Dict]]
+    ) -> List[Dict[str, Any]]:
         """Detect conflicting information"""
         if not snippets:
             return []
 
-        content = "\n\n".join(
-            [s.get("content", s.get("snippet", "")) for s in snippets]
-        )
+        normalized = [self._normalize_snippet(s) for s in snippets]
+        content = "\n\n".join([s.get("content", "") for s in normalized])
 
         prompt = f"""You are a conflict detection assistant. Identify any conflicting information in the following content.
 Return a JSON array of conflicts found, each with 'issue', 'source1', 'source2' fields. If no conflicts, return empty array.
@@ -112,17 +127,15 @@ Conflicts (JSON array):
         return []
 
     def rank_by_relevance(
-        self, query: str, snippets: List[Dict[str, Any]]
+        self, query: str, snippets: List[Union[str, Dict]]
     ) -> List[Dict[str, Any]]:
         """Rank snippets by relevance to query"""
         if not snippets:
             return []
 
+        normalized = [self._normalize_snippet(s) for s in snippets]
         snippet_texts = "\n---\n".join(
-            [
-                f"Item {i + 1}: {s.get('content', s.get('snippet', ''))[:500]}"
-                for i, s in enumerate(snippets)
-            ]
+            [f"Item {i + 1}: {s.get('content', '')}" for i, s in enumerate(normalized)]
         )
 
         prompt = f"""You are a relevance ranking assistant. Rank these items by relevance to the query.
@@ -154,12 +167,12 @@ Ranked JSON array:
         except:
             pass
 
-        return snippets
+        return normalized
 
     def build_context(
         self,
         query: str,
-        raw_snippets: List[Dict[str, Any]],
+        raw_snippets: List[Union[str, Dict]],
         include_summary: bool = True,
         include_conflicts: bool = True,
         dedupe: bool = True,
@@ -168,26 +181,23 @@ Ranked JSON array:
 
         snippets = raw_snippets
 
-        # Step 1: Deduplicate if requested
         if dedupe and len(snippets) > 1:
             snippets = self.deduplicate(snippets)
 
-        # Step 2: Rank by relevance
         snippets = self.rank_by_relevance(query, snippets)
 
-        # Step 3: Detect conflicts if requested
         conflicts = []
         if include_conflicts and len(snippets) > 1:
             conflicts = self.detect_conflicts(snippets)
 
-        # Step 4: Generate summary if requested
         summary = ""
         if include_summary:
             summary = self.summarize(snippets)
 
-        # Step 5: Format final context
         context = {
-            "facts": [s.get("content", s.get("snippet", "")) for s in snippets],
+            "facts": [
+                self._normalize_snippet(s).get("content", str(s)) for s in snippets
+            ],
             "summary": summary,
             "conflicts": conflicts,
             "source_count": len(snippets),
@@ -197,7 +207,7 @@ Ranked JSON array:
         return context
 
 
-def build_context(query: str, search_results: List[Dict[str, Any]]) -> Dict[str, Any]:
+def build_context(query: str, search_results: List[Union[str, Dict]]) -> Dict[str, Any]:
     """Convenience function to build context from search results"""
     builder = ContextBuilder()
     return builder.build_context(query, search_results)

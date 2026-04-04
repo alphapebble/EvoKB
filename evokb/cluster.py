@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
 from pathlib import Path
-import duckdb
 import hashlib
 
 
@@ -29,6 +28,8 @@ class KnowledgeCluster:
 
 class ClusterStore:
     def __init__(self, path="clusters/evokb.db"):
+        import duckdb
+
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.conn = duckdb.connect(path)
         self.conn.execute("""

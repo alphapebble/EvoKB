@@ -54,7 +54,7 @@ def test_list_files_recursive(tmp_path):
     (tmp_path / "sub").mkdir()
     (tmp_path / "sub" / "file2.md").write_text("content")
 
-    files = list_files(tmp_path, "*.md")
+    files = list_files(tmp_path, "**/*.md")
     assert len(files) == 2
 
 
