@@ -1,6 +1,6 @@
 # Context Engine — Production-Grade Open Source Guide
 
-A step-by-step roadmap to building a next-gen "RAG replacement" / context-engine system, inspired by Sirchmunk and Karpathy's vision.
+A step-by-step roadmap to building a next-gen "RAG replacement" / context-engine system, inspired by Karpathy's vision.
 
 > **TL;DR**: From "retrieve documents → answer" → to "construct context → reason"
 
@@ -56,7 +56,6 @@ A step-by-step roadmap to building a next-gen "RAG replacement" / context-engine
 - **Introduction to Information Retrieval** — Ranking, indexing
 
 ### Real Systems
-- **Sirchmunk Architecture** — Indexless retrieval, knowledge clusters
 - **Anthropic Papers** — Tool use, memory, agents
 
 ### Agents (Practical)
@@ -144,7 +143,6 @@ context-engine/
 ## 🔗 Key Resources
 
 - [Karpathy: LLM Knowledge Base](https://github.com/karpathy/llm-agent-scaffold)
-- [Sirchmunk Architecture](https://modelscope.github.io/sirchmunk-web/)
 - [BM25 Algorithm](https://en.wikipedia.org/wiki/Okapi_BM25)
 - [ReAct Paper](https://arxiv.org/abs/2210.03629)
 - [Designing Data-Intensive Applications](https://dataintensive.net/)

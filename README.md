@@ -36,7 +36,6 @@ A lightweight, self-maintaining **Context Engine** powered by an **autoresearch-
 
 ## Inspired By
 - **Karpathy**: LLM = CPU, Context = RAM
-- **Sirchmunk**: Indexless search, knowledge clusters
 
 ## Quick Start
 
