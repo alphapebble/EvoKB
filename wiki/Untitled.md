@@ -1,3 +1,8 @@
+---
+title: Untitled
+date: 2026-04-04
+---
+
 ## Alphapebble: A Review of the Company's Research on Sustainability in Supply Chain Management
 
 ### Tags: sustainability, supply chain management, corporate social responsibility

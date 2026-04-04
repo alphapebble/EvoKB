@@ -1,3 +1,8 @@
+---
+title: Zero-Trust AI Shield: Securing the Agentic Perimeter
+date: 2026-04-04
+---
+
 # Zero-Trust AI Shield: Securing the Agentic Perimeter
 
 ## Tags

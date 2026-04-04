@@ -1,3 +1,8 @@
+---
+title: AI Research Notes
+date: 2026-04-04
+---
+
 **AI Research Notes**
 ======================
 

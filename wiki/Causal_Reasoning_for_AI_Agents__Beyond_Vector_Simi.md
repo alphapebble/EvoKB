@@ -1,3 +1,8 @@
+---
+title: Causal Reasoning for AI Agents: Beyond Vector Similarity
+date: 2026-04-04
+---
+
 **Causal Reasoning for AI Agents: Beyond Vector Similarity**
 ===========================================================
 

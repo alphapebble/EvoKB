@@ -1,3 +1,8 @@
+---
+title: Ontology Engineering: The Logic of World-Modeling
+date: 2026-04-04
+---
+
 **Ontology Engineering: The Logic of World-Modeling**
 =====================================================
 

@@ -1,3 +1,8 @@
+---
+title: Activity-Stream Engineering: Capturing the Pulse of AI-Agents
+date: 2026-04-04
+---
+
 **Activity-Stream Engineering: Capturing the Pulse of AI-Agents**
 =====================================
 

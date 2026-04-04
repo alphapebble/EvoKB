@@ -1,3 +1,8 @@
+---
+title: EvoKB Project
+date: 2026-04-04
+---
+
 **EvoKB Project**
 =====================
 

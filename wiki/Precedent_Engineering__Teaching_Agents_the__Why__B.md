@@ -1,3 +1,8 @@
+---
+title: Precedent Engineering: Teaching Agents the 'Why' Behind Decisions
+date: 2026-04-04
+---
+
 Here is a clean, structured Markdown wiki page based on the provided raw document:
 
 **Precedent Engineering: Teaching Agents the 'Why' Behind Decisions**

@@ -1,3 +1,8 @@
+---
+title: Alpha Pebble Privacy Policy
+date: 2026-04-04
+---
+
 **Alpha Pebble Privacy Policy**
 =============================
 

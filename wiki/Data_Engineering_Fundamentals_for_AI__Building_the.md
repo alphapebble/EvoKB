@@ -1,3 +1,8 @@
+---
+title: Data Engineering Fundamentals for AI: Building the Foundation That Makes AI Work
+date: 2026-04-04
+---
+
 Here's the transformed Markdown wiki page:
 
 **Data Engineering Fundamentals for AI: Building the Foundation That Makes AI Work**

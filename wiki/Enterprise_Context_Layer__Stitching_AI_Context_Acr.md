@@ -1,3 +1,8 @@
+---
+title: Enterprise Context Layer: Stitching AI Context Across Systems
+date: 2026-04-04
+---
+
 Here's a clean, structured Markdown wiki page based on your raw document:
 
 **Enterprise Context Layer: Stitching AI Context Across Systems**

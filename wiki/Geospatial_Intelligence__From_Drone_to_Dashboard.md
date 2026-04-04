@@ -1,3 +1,8 @@
+---
+title: Geospatial Intelligence: From Drone to Dashboard
+date: 2026-04-04
+---
+
 **Geospatial Intelligence: From Drone to Dashboard**
 ==============================================
 

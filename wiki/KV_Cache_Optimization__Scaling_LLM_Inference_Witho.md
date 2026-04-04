@@ -1,3 +1,8 @@
+---
+title: KV Cache Optimization: Scaling LLM Inference Without Buying More GPUs
+date: 2026-04-04
+---
+
 **KV Cache Optimization: Scaling LLM Inference Without Buying More GPUs**
 ===========================================================
 

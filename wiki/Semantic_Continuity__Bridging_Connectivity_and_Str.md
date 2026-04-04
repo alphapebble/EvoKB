@@ -1,3 +1,8 @@
+---
+title: Untitled
+date: 2026-04-04
+---
+
 ### Semantic Continuity: Bridging Connectivity and Structured Knowledge
 
 #### Table of Contents
