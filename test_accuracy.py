@@ -132,6 +132,19 @@ def main():
     print(f"Q&A Accuracy:   {qa_accuracy:.2f} ({qa_accuracy * 100:.1f}%)")
     print(f"Search MRR:      {search_mrr:.2f} ({search_mrr * 100:.1f}%)")
 
+    # Save results to metrics.json
+    import json
+    from datetime import datetime
+
+    metrics = {
+        "qa_accuracy": qa_accuracy,
+        "search_mrr": search_mrr,
+        "timestamp": datetime.now().isoformat(),
+    }
+    Path("eval").mkdir(exist_ok=True)
+    with open("eval/metrics.json", "w") as f:
+        json.dump(metrics, f, indent=2)
+
     # Return exit code based on thresholds
     if qa_accuracy >= 0.5 and search_mrr >= 0.3:
         print("\n✅ PASSED - System meets minimum accuracy thresholds")
