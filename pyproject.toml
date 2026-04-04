@@ -1,0 +1,17 @@
+[project]
+name = "evokb"
+version = "0.1.0"
+description = "Self-evolving Markdown knowledge base with autoresearch-style LLM librarian"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "litellm>=1.0",
+    "ollama",
+    "python-frontmatter",
+    "watchdog",
+    "markdown",
+]
+
+[project.scripts]
+evokb = "src.librarian:main"
