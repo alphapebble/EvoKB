@@ -46,7 +46,7 @@ uv venv
 source .venv/bin/activate
 uv pip install -e .
 mkdir -p raw wiki clusters
-evokb
+python -m evokb.agents.librarian
 ```
 
 ## Project Structure
@@ -59,14 +59,16 @@ evokb/
 ├── program.md        # Librarian instructions
 ├── evokb/
 │   ├── __init__.py
-│   ├── config.py
-│   ├── librarian.py  # Main agent loop
-│   ├── retriever.py  # Indexless search + Monte Carlo
-│   ├── evaluator.py  # Score changes
-│   ├── cluster.py    # Knowledge clusters
-│   └── utils.py
-├── tests/            # Test suite
-├── BUILD_GUIDE.md   # Production-grade build guide
+│   ├── api.py        # FastAPI server
+│   ├── core/         # Core utilities (config, utils, retriever, router, search, context)
+│   ├── agents/       # Agent implementations (agent, librarian, hermes)
+│   ├── memory/       # Memory/cluster store
+│   ├── eval/         # Evaluation metrics
+│   ├── reporting/    # Reporting dashboard
+│   ├── connectors/   # External integrations (gmail, notion)
+│   └── ingest/       # Data ingestion (scraper, schema_evolution)
+├── tests/            # Test suite (99 tests)
+├── scripts/          # Pipeline scripts
 └── pyproject.toml
 ```
 
@@ -75,15 +77,16 @@ evokb/
 ### Start the Librarian
 
 ```bash
-evokb
+python -m evokb.agents.librarian
 ```
 
 ### Query the Knowledge Base
 
 ```python
-from evokb import query_evo_kb, search_kb, index_wiki
+from evokb.core.retriever import query_evo_kb
+from evokb.core.search import search_kb, index_wiki
 
-# Search using Tantivy
+# Search using keyword-based search
 results = search_kb("your question here")
 print(results)
 
