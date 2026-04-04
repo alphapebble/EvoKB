@@ -59,20 +59,7 @@ jobs:
         run: python3 test_accuracy.py
 
       - name: Update eval README
-        run: python3 << 'EOF'
-import json
-with open('eval/metrics.json') as f:
-    m = json.load(f)
-with open('eval/README.md', 'w') as f:
-    f.write(f'''# Evaluation Results
-
-## Metrics
-- Q&A Accuracy: {m.get('qa_accuracy', 0):.1%}
-- Search MRR: {m.get('search_mrr', 0):.1%}
-
-Last updated: {m.get('timestamp', 'N/A')}
-''')
-EOF
+        run: python3 scripts/update_readme.py
 
       - name: Commit eval updates
         uses: stefanzweifel/git-auto-commit-action@v5
