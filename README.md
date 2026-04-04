@@ -4,16 +4,16 @@
 
 Drop raw documents (notes, papers, web clips) into the `raw/` folder. The librarian reads `program.md` and proposes improvements to the `wiki/` folder — summaries, backlinks, structure, and connections.
 
-Inspired by Andrej Karpathy's LLM Knowledge Base vision and the Sirchmunk retrieval architecture.
+Inspired by Andrej Karpathy's LLM Knowledge Base vision and his autoresearch loop.
 
 ## Features
 - Plain Markdown as the single source of truth (fully editable in Obsidian or VS Code)
-- Autoresearch-style agent loop
+- Autoresearch-style agent loop (propose → evaluate → apply)
+- Monte Carlo evidence sampling for smart retrieval
 - Local-first (Ollama by default)
 - Lightweight — no heavy vector DB required
 - File watcher for automatic processing
 - Knowledge clusters for smart retrieval
-- Monte Carlo-style evidence sampling
 
 ## Architecture
 
@@ -22,26 +22,16 @@ evokb/
 ├── raw/              # Drop papers, web clips, notes here
 ├── wiki/             # LLM-compiled clean Markdown wiki (source of truth)
 ├── clusters/         # Evolving Knowledge Clusters (DuckDB)
+├── program.md        # Librarian instructions (human + agent editable)
 ├── src/
 │   ├── __init__.py
 │   ├── config.py     # Configuration
-│   ├── librarian.py # Main compilation + backlink agent + file watcher
-│   ├── retriever.py # Smart retrieval with keyword search + Monte Carlo sampling
+│   ├── librarian.py # Main file watcher + entry point
+│   ├── retriever.py # Autoresearch loop + Monte Carlo sampling
 │   ├── cluster.py   # Knowledge Cluster class + DuckDB store
 │   └── utils.py     # File utilities
-├── program.md        # Librarian instructions
 └── pyproject.toml
 ```
-
-## Tech Stack
-
-| Layer | Library | Why |
-|-------|---------|-----|
-| Language | Python 3.12+ | Mature ecosystem for agents |
-| LLM interface | LiteLLM + Ollama | One API for local + cloud models |
-| Markdown | python-frontmatter, markdown | Parse/edit Markdown with metadata |
-| File watching | watchdog | Auto-trigger librarian on file changes |
-| Storage | DuckDB | Lightweight cluster persistence |
 
 ## Quick Start
 
@@ -50,14 +40,13 @@ git clone https://github.com/alphapebble/EvoKB.git
 cd EvoKB
 
 uv venv
-source .venv/bin/activate     # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 
 uv pip install -e .
 
 mkdir -p raw wiki clusters
 
 evokb
-# or: python -m src.librarian
 ```
 
 ## Usage
@@ -66,13 +55,13 @@ evokb
 
 ```bash
 evokb
-# or: python -m src.librarian
 ```
 
-Drop files into `raw/` (Markdown, PDF, TXT). The librarian automatically:
-- Compiles raw documents into clean wiki pages
-- Creates backlinks and connections
-- Improves existing pages
+The librarian runs an autoresearch-style loop:
+1. Reads `program.md` for instructions
+2. Scans `raw/` for new documents
+3. Proposes improvements to `wiki/`
+4. Uses Monte Carlo sampling for retrieval
 
 ### Query the Knowledge Base
 
@@ -85,11 +74,14 @@ print(answer)
 
 ## Configuration
 
-Edit `program.md` to customize the librarian's behavior. Change the model in any Python file:
+Edit `src/config.py` to change settings:
 
 ```python
-MODEL = "ollama/llama3.2"   # or "groq/llama-3.3-70b-versatile"
+MODEL = "ollama/llama3.2"
+CHECK_INTERVAL = 8
 ```
+
+Edit `program.md` to customize the librarian's behavior.
 
 ## Contributing
 
