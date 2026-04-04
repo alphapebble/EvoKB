@@ -58,7 +58,8 @@ class ClusterStore:
             if overlap >= threshold:
                 results.append((overlap, cluster))
 
-        results.sort(reverse=True)
+        # Sort by overlap score only
+        results.sort(key=lambda x: x[0], reverse=True)
         return results
 
     def get(self, cluster_id: str):
