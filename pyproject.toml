@@ -11,6 +11,8 @@ dependencies = [
     "python-frontmatter",
     "watchdog",
     "markdown",
+    "duckdb",
+    "langgraph",
 ]
 
 [project.scripts]
