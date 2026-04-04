@@ -6,7 +6,7 @@ from watchdog.events import FileSystemEventHandler
 from .config import CHECK_INTERVAL, RAW_DIR, WIKI_DIR, PROGRAM_MD
 from .utils import ensure_dir, read_file
 from .retriever import compile_to_wiki, run_autoresearch_iteration
-from .evaluator import score_change, apply_change, revert_change, git_commit
+from .evaluator import score_change, apply_change, revert_change
 
 
 class RawHandler(FileSystemEventHandler):
@@ -70,9 +70,6 @@ def run_safe_iteration():
             if eval_result.get("passed", False):
                 if apply_change(target_file, new_content):
                     print(f"✅ Applied change to {parsed['target']}")
-                    git_commit(
-                        f"Improve {parsed['target']}: {parsed.get('reasoning', 'Auto-improvement')}"
-                    )
                 else:
                     print("❌ Failed to apply change")
             else:
@@ -81,7 +78,6 @@ def run_safe_iteration():
         new_path = WIKI_DIR / "new_page.md"
         if apply_change(new_path, parsed["content"]):
             print(f"✅ Created new page")
-            git_commit(f"Create new page: {parsed.get('reasoning', 'New content')}")
 
 
 def main():

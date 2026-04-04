@@ -1,6 +1,8 @@
-import subprocess
+import re
+import json
 from pathlib import Path
 from litellm import completion
+
 from .config import MODEL
 from .utils import read_file
 
@@ -26,12 +28,8 @@ Scores should be 0-10, where 10 is perfect.
         )
         output = resp.choices[0].message.content
 
-        import re
-
         json_match = re.search(r"\{[^}]+\}", output)
         if json_match:
-            import json
-
             scores = json.loads(json_match.group())
             overall = scores.get("overall", sum(scores.values()) / len(scores))
             return {"scores": scores, "overall": overall, "passed": overall >= 8}
@@ -71,14 +69,3 @@ def revert_change(target_path: Path) -> bool:
             print(f"Error reverting: {e}")
             return False
     return False
-
-
-def git_commit(message: str) -> bool:
-    try:
-        subprocess.run(["git", "add", "-A"], check=True, capture_output=True)
-        subprocess.run(
-            ["git", "commit", "-m", message], check=True, capture_output=True
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
