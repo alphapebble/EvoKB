@@ -6,37 +6,35 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 2 * * *'  # Daily at 2am
+    - cron: '0 2 * * *'
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-          
+
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
+
       - name: Fetch raw data
         run: |
           mkdir -p raw
-          # TODO: Replace with actual data fetch
-          # git clone --depth 1 https://github.com/alphapebble/playbooks.git raw/
-          echo "# Placeholder - fetch from external source" > raw/placeholder.md
-      
+          echo "# Placeholder" > raw/placeholder.md
+
       - name: Compile raw to wiki
-        run: python3 -c "
+        run: python3 << 'EOF'
 from pathlib import Path
 from evokb.retriever import compile_to_wiki
 for f in Path('raw').glob('*.md'):
     compile_to_wiki(f, Path('wiki'))
-"
-        
+EOF
+
       - name: Run tests
         run: python3 -m pytest tests/ -q
 
@@ -45,33 +43,33 @@ for f in Path('raw').glob('*.md'):
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-          
+
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
+
       - name: Fetch raw data
         run: |
           mkdir -p raw
           echo "# Placeholder" > raw/placeholder.md
-      
+
       - name: Compile raw to wiki
-        run: python3 -c "
+        run: python3 << 'EOF'
 from pathlib import Path
 from evokb.retriever import compile_to_wiki
 for f in Path('raw').glob('*.md'):
     compile_to_wiki(f, Path('wiki'))
-"
-        
+EOF
+
       - name: Run evaluation
         run: python3 test_accuracy.py
-        
+
       - name: Update eval README
-        run: python3 -c "
+        run: python3 << 'EOF'
 import json
 with open('eval/metrics.json') as f:
     m = json.load(f)
@@ -84,7 +82,7 @@ with open('eval/README.md', 'w') as f:
 
 Last updated: {m.get('timestamp', 'N/A')}
 ''')
-"
+EOF
 
       - name: Commit eval updates
         uses: stefanzweifel/git-auto-commit-action@v5
