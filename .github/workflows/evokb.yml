@@ -28,12 +28,7 @@ jobs:
           echo "# Placeholder" > raw/placeholder.md
 
       - name: Compile raw to wiki
-        run: python3 << 'EOF'
-from pathlib import Path
-from evokb.retriever import compile_to_wiki
-for f in Path('raw').glob('*.md'):
-    compile_to_wiki(f, Path('wiki'))
-EOF
+        run: python3 scripts/compile.py
 
       - name: Run tests
         run: python3 -m pytest tests/ -q
@@ -58,12 +53,7 @@ EOF
           echo "# Placeholder" > raw/placeholder.md
 
       - name: Compile raw to wiki
-        run: python3 << 'EOF'
-from pathlib import Path
-from evokb.retriever import compile_to_wiki
-for f in Path('raw').glob('*.md'):
-    compile_to_wiki(f, Path('wiki'))
-EOF
+        run: python3 scripts/compile.py
 
       - name: Run evaluation
         run: python3 test_accuracy.py
