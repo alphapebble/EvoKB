@@ -104,6 +104,7 @@ print(answer)
 - [x] FastAPI backend
 - [x] Docker support
 - [ ] Audio Overviews (AI-generated podcasts from wiki)
+- [ ] TTS (Text-to-Speech for wiki content)
 
 ## Contributing
 
