@@ -1,57 +1,71 @@
 # EvoKB — Evolving Knowledge Base
 
-A lightweight, self-maintaining Markdown-first knowledge base powered by an **autoresearch-style LLM librarian**.
+A lightweight, self-maintaining **Context Engine** powered by an **autoresearch-style LLM librarian**.
 
-Drop raw documents (notes, papers, web clips) into `raw/`. The librarian automatically compiles them into clean, interlinked wiki pages in `wiki/`, creates backlinks, summaries, and evolves the knowledge over time.
+> **Philosophy**: From "retrieve documents → answer" → to "construct context → reason"
 
-**Inspired by** Andrej Karpathy's LLM Knowledge Base vision and his autoresearch loop.
+## Architecture
+
+```
+┌──────────────┐
+│ Raw Data     │  (files, emails, APIs)
+└──────┬───────┘
+       │
+┌──────▼───────┐
+│ Indexless    │  (keyword + Monte Carlo search)
+│ Retrieval   │
+└──────┬───────┘
+       │
+┌──────▼───────┐
+│ Context      │  (summarize, deduplicate, filter)
+│ Builder      │
+└──────┬───────┘
+       │
+┌──────▼───────┐
+│ LLM Agent    │  (reason, tool-use, memory)
+└──────────────┘
+```
 
 ## Features
 - Plain Markdown as the single source of truth (human-editable in Obsidian/VS Code)
-- Autoresearch-style agent loop: propose → apply → evaluate → improve
+- Autoresearch-style agent loop: propose → evaluate → apply → improve
+- **Indexless retrieval** — No vector DB, no embeddings
+- **Monte Carlo evidence sampling** for smart retrieval
 - Local-first (runs with Ollama by default)
-- No heavy vector DB or complex RAG at the core
-- Easy to extend with your own data
+- Knowledge clusters for fast, reusable answers
+
+## Inspired By
+- **Karpathy**: LLM = CPU, Context = RAM
+- **Sirchmunk**: Indexless search, knowledge clusters
 
 ## Quick Start
 
 ```bash
-# 1. Clone & setup
 git clone https://github.com/alphapebble/evokb.git
 cd evokb
 uv venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-
-# 2. Install dependencies
+source .venv/bin/activate
 uv pip install -e .
-
-# 3. Put your documents in raw/
 mkdir -p raw wiki clusters
-
-# 4. Run the librarian
 evokb
-# or: python -m src.librarian
 ```
-
-Drop Markdown/PDF/TXT files into `raw/` and watch the librarian work.
 
 ## Project Structure
 
 ```
 evokb/
 ├── raw/              # Incoming raw documents
-├── wiki/             # Clean, evolving knowledge base (edit manually too)
+├── wiki/             # Clean, evolving knowledge base
 ├── clusters/         # Knowledge clusters for fast retrieval
-├── program.md        # Instructions that guide the librarian (you + agent can edit)
-├── src/              # Core Python code
-│   ├── __init__.py
+├── program.md        # Librarian instructions
+├── src/
 │   ├── config.py
-│   ├── librarian.py
-│   ├── retriever.py
-│   ├── cluster.py
+│   ├── librarian.py  # Main agent loop
+│   ├── retriever.py  # Indexless search + Monte Carlo
+│   ├── evaluator.py  # Score changes
+│   ├── cluster.py    # Knowledge clusters
 │   └── utils.py
-├── pyproject.toml
-└── README.md
+└── BUILD_GUIDE.md   # Production-grade build guide
 ```
 
 ## Usage
@@ -62,12 +76,6 @@ evokb/
 evokb
 ```
 
-The librarian runs an autoresearch-style loop that:
-1. Reads `program.md` for instructions
-2. Scans `raw/` for new documents
-3. Proposes improvements to `wiki/`
-4. Creates backlinks and connections between pages
-
 ### Query the Knowledge Base
 
 ```python
@@ -77,16 +85,21 @@ answer, cluster = query_evo_kb("your question here")
 print(answer)
 ```
 
+## Documentation
+
+- [BUILD_GUIDE.md](BUILD_GUIDE.md) — Step-by-step production-grade guide
+
 ## Roadmap
 
-- Safe change application + evaluation loop
-- Knowledge Cluster evolution
-- Better PDF support
-- Obsidian plugin / simple web UI
+- [ ] BM25 search integration
+- [ ] Context builder layer
+- [ ] Agent classifier
+- [ ] FastAPI backend
+- [ ] Docker support
 
 ## Contributing
 
-Contributions welcome! Please open an issue or PR on GitHub.
+Contributions welcome!
 
 ## License
 
