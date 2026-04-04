@@ -1,0 +1,84 @@
+name: EvoKB Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  full-pipeline:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # ===== 01-INGEST =====
+      - name: "[1/4] Ingest: Fetch external data"
+        run: |
+          python scripts/ingest.py || echo "No external sources configured"
+        id: ingest
+
+      # ===== 02-COMPILE =====
+      - name: "[2/4] Compile: Build wiki from raw"
+        run: python scripts/compile.py
+        id: compile
+
+      - name: Commit compiled wiki
+        if: github.ref == 'refs/heads/main'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Compile: build wiki from raw"
+          file_pattern: wiki/*
+
+      # ===== 03-TEST =====
+      - name: "[3/4] Test: Run tests and evaluation"
+        run: |
+          git checkout HEAD -- wiki/ 2>/dev/null || true
+          python -m pytest tests/ -q --tb=short
+          python test_accuracy.py
+        id: test
+
+      - name: Update eval README
+        run: python scripts/update_readme.py
+
+      - name: Commit eval updates
+        if: github.ref == 'refs/heads/main'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Evaluate: update metrics"
+          file_pattern: eval/*
+
+      # ===== 04-AUTOREVIEW =====
+      - name: "[4/4] Autoreview: Self-improve wiki"
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git checkout HEAD -- wiki/ 2>/dev/null || true
+          python run_autoreview.py --iterations 2 || echo "Autoreview skipped"
+        id: autoreview
+
+      - name: Commit wiki improvements
+        if: github.ref == 'refs/heads/main'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Autoreview: improve wiki content"
+          file_pattern: wiki/*
+
+      - name: Summary
+        run: |
+          echo "✅ Pipeline complete"
+          echo "  - Ingest: ${{ steps.ingest.outcome }}"
+          echo "  - Compile: ${{ steps.compile.outcome }}"
+          echo "  - Test: ${{ steps.test.outcome }}"
+          echo "  - Autoreview: ${{ steps.autoreview.outcome }}"
