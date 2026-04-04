@@ -105,7 +105,10 @@ def test_search_accuracy():
 
         print(f"\nQuery: {test['query']}")
         print(f"  MRR: {mrr_scores[-1]:.2f}")
-        print(f"  Top result: {results[0]['title'][:40]}")
+        if results:
+            print(f"  Top result: {results[0]['title'][:40]}")
+        else:
+            print(f"  Top result: (no results)")
 
     avg_mrr = sum(mrr_scores) / len(mrr_scores) if mrr_scores else 0
     print(f"\n{'=' * 60}")

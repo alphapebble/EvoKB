@@ -6,3 +6,4 @@ __pycache__/
 .pytest_cache/
 clusters/
 .DS_Store
+raw/
