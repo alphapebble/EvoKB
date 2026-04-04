@@ -6,10 +6,17 @@ A self-evolving knowledge base for AI engineering concepts, research, and techni
 
 | Category | Description |
 |----------|-------------|
-| [Architecture](./index.md) | System design patterns |
-| [Data & Knowledge](./Knowledge_Graph_Engineering__Structuring_Knowledge.md) | Knowledge graphs, data engineering |
-| [AI & Reasoning](./Causal_Reasoning_for_AI_Agents__Beyond_Vector_Simi.md) | Causal reasoning, ontologies |
-| [Engineering](./KV_Cache_Optimization__Scaling_LLM_Inference_Witho.md) | Performance, security, optimization |
+| [Index](./index.md) | Full table of contents |
+| [Knowledge Graph](./knowledge-graph.md) | Structuring knowledge for AI |
+| [Dual Engine](./dual-engine.md) | Architecture patterns |
+| [Enterprise Context](./enterprise-context.md) | Context across systems |
+
+## Categories
+
+- **Architecture**: [dual-engine](./dual-engine.md), [enterprise-context](./enterprise-context.md), [activity-stream](./activity-stream.md)
+- **Data & Knowledge**: [knowledge-graph](./knowledge-graph.md), [data-engineering](./data-engineering.md), [semantic-continuity](./semantic-continuity.md)
+- **AI & Reasoning**: [causal-reasoning](./causal-reasoning.md), [precedent-engineering](./precedent-engineering.md), [ontology-engineering](./ontology-engineering.md)
+- **Engineering**: [kv-cache](./kv-cache.md), [zero-trust](./zero-trust.md), [geospatial-intelligence](./geospatial-intelligence.md)
 
 ## About
 
