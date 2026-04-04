@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  evokb:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./raw:/app/raw
+      - ./wiki:/app/wiki
+      - ./clusters:/app/clusters
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    command: uvicorn evokb.api:app --host 0.0.0.0 --port 8000
+
+  librarian:
+    build: .
+    volumes:
+      - ./raw:/app/raw
+      - ./wiki:/app/wiki
+      - ./clusters:/app/clusters
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    command: evokb
+    profiles:
+      - librarian

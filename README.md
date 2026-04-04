@@ -81,8 +81,13 @@ evokb
 ### Query the Knowledge Base
 
 ```python
-from evokb import query_evo_kb
+from evokb import query_evo_kb, search_kb, index_wiki
 
+# Search using Tantivy
+results = search_kb("your question here")
+print(results)
+
+# Or use the full retriever with LLM
 answer, cluster = query_evo_kb("your question here")
 print(answer)
 ```
@@ -93,11 +98,11 @@ print(answer)
 
 ## Roadmap
 
-- [ ] Tantivy search integration
-- [ ] Context builder layer
-- [ ] Agent classifier
-- [ ] FastAPI backend
-- [ ] Docker support
+- [x] Tantivy search integration
+- [x] Context builder layer
+- [x] Agent classifier
+- [x] FastAPI backend
+- [x] Docker support
 
 ## Contributing
 

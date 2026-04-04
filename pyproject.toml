@@ -19,6 +19,9 @@ dependencies = [
     "duckdb",
     "langgraph",
     "tqdm",
+    "tantivy",
+    "fastapi",
+    "uvicorn",
 ]
 
 [project.optional-dependencies]
@@ -28,3 +31,4 @@ dev = [
 
 [project.scripts]
 evokb = "evokb.librarian:main"
+evokb-api = "evokb.api:main"

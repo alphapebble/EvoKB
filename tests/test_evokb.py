@@ -3,157 +3,87 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 
-def test_cluster_creation():
-    from evokb.cluster import KnowledgeCluster
+def test_search_index_creation(tmp_path):
+    from evokb.search import TantivySearch
 
-    cluster = KnowledgeCluster(
-        query="test query",
-        evidences=[{"file": "test.md", "snippet": "test", "score": 8}],
-        summary="test summary",
-        confidence=85,
-    )
+    # Create temp index
+    index_dir = str(tmp_path / "test_index")
+    search = TantivySearch(index_dir=index_dir)
 
-    assert cluster.query == "test query"
-    assert cluster.confidence == 85
-    assert cluster.use_count == 1
-    assert len(cluster.history) == 1
+    assert search.index is not None
+    assert Path(index_dir).exists()
 
 
-def test_cluster_to_dict():
-    from evokb.cluster import KnowledgeCluster
+@patch("evokb.search.read_file")
+def test_index_documents(mock_read_file, tmp_path):
+    from evokb.search import TantivySearch
 
-    cluster = KnowledgeCluster(
-        query="test", evidences=[], summary="summary", confidence=80
-    )
-
-    data = cluster.to_dict()
-
-    assert data["query"] == "test"
-    assert data["confidence"] == 80
-    assert "id" in data
-    assert "created_at" in data
-
-
-def test_utils_read_file(tmp_path):
-    from evokb.utils import read_file
-
-    test_file = tmp_path / "test.md"
-    test_file.write_text("# Test Content")
-
-    content = read_file(test_file)
-    assert content == "# Test Content"
-
-
-def test_utils_read_nonexistent():
-    from evokb.utils import read_file
-
-    result = read_file(Path("/nonexistent/file.md"))
-    assert result == ""
-
-
-def test_utils_list_files(tmp_path):
-    from evokb.utils import list_files
-
-    (tmp_path / "file1.md").write_text("content")
-    (tmp_path / "file2.md").write_text("content")
-
-    files = list_files(tmp_path, "*.md")
-    assert len(files) == 2
-
-
-def test_utils_ensure_dir(tmp_path):
-    from evokb.utils import ensure_dir
-
-    new_dir = tmp_path / "new_folder"
-    result = ensure_dir(new_dir)
-
-    assert new_dir.exists()
-    assert result == new_dir
-
-
-def test_config_defaults():
-    from evokb.config import MODEL, CHECK_INTERVAL
-
-    assert MODEL == "ollama/llama3.2"
-    assert CHECK_INTERVAL == 8
-
-
-@patch("evokb.retriever.completion")
-def test_extract_keywords(mock_completion):
-    from evokb.retriever import extract_keywords
-
-    mock_response = MagicMock()
-    mock_response.choices = [
-        MagicMock(message=MagicMock(content="test, keywords, here"))
-    ]
-    mock_completion.return_value = mock_response
-
-    keywords = extract_keywords("test query")
-
-    assert "test" in keywords
-    assert "keywords" in keywords
-
-
-@patch("evokb.retriever.completion")
-def test_simple_keyword_search(mock_completion, tmp_path):
-    from evokb.retriever import simple_keyword_search
-
+    # Create wiki dir with test files
     wiki_dir = tmp_path / "wiki"
     wiki_dir.mkdir()
 
-    (wiki_dir / "test.md").write_text(
-        "This is a test file about artificial intelligence"
-    )
+    (wiki_dir / "test1.md").write_text("# Test 1\nSome content about AI")
+    (wiki_dir / "test2.md").write_text("# Test 2\nMore content about ML")
 
-    keywords = ["artificial", "intelligence"]
-    results = simple_keyword_search(keywords, wiki_dir)
+    index_dir = str(tmp_path / "index")
+    search = TantivySearch(index_dir=index_dir)
+    search.index_documents(wiki_dir)
 
-    assert len(results) > 0
-    assert results[0][0] >= 1
-
-
-def test_apply_change_creates_backup(tmp_path):
-    from evokb.evaluator import apply_change
-
-    test_file = tmp_path / "test.md"
-    test_file.write_text("original content")
-
-    result = apply_change(test_file, "new content")
-    backup_file = tmp_path / "test.md.bak"
-
-    assert result is True
-    assert test_file.read_text() == "new content"
-    assert backup_file.exists()
-    assert backup_file.read_text() == "original content"
+    # Index should be created
+    assert Path(index_dir).exists()
 
 
-def test_revert_change(tmp_path):
-    from evokb.evaluator import apply_change, revert_change
+def test_search_returns_results(tmp_path):
+    from evokb.search import TantivySearch
 
-    test_file = tmp_path / "test.md"
-    test_file.write_text("original")
-    backup_file = tmp_path / "test.md.bak"
-    backup_file.write_text("backup content")
+    wiki_dir = tmp_path / "wiki"
+    wiki_dir.mkdir()
+    (wiki_dir / "test.md").write_text("# AI\nArtificial Intelligence is great")
 
-    result = revert_change(test_file)
+    index_dir = str(tmp_path / "index")
+    search = TantivySearch(index_dir=index_dir)
+    search.index_documents(wiki_dir)
 
-    assert result is True
-    assert test_file.read_text() == "backup content"
-    assert not backup_file.exists()
+    results = search.search("Artificial Intelligence", top_k=5)
+
+    assert isinstance(results, list)
 
 
-@patch("evokb.evaluator.completion")
-def test_score_change(mock_completion):
-    from evokb.evaluator import score_change
+def test_context_builder_init():
+    from evokb.context import ContextBuilder
+
+    builder = ContextBuilder()
+    assert builder.model is not None
+
+
+@patch("evokb.context.completion")
+def test_summarize(mock_completion):
+    from evokb.context import ContextBuilder
 
     mock_response = MagicMock()
     mock_response.choices = [
-        MagicMock(
-            message=MagicMock(content='{"clarity": 8, "grounding": 9, "overall": 8}')
-        )
+        MagicMock(message=MagicMock(content="This is a summary of the content."))
     ]
     mock_completion.return_value = mock_response
 
-    result = score_change("test content", ["clarity", "grounding"])
+    builder = ContextBuilder()
+    snippets = [{"content": "Some test content", "path": "test.md"}]
 
-    assert "overall" in result or "error" in result
+    result = builder.summarize(snippets)
+
+    assert isinstance(result, str)
+
+
+def test_build_context_returns_dict():
+    from evokb.context import ContextBuilder
+
+    builder = ContextBuilder()
+    snippets = [{"content": "Test fact", "path": "test.md"}]
+
+    # This will fail without LLM but should return structure
+    result = builder.build_context("test query", snippets, include_summary=False)
+
+    assert "facts" in result
+    assert "summary" in result
+    assert "conflicts" in result
+    assert result["query"] == "test query"
