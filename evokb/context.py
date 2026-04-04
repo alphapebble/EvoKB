@@ -128,7 +128,7 @@ Conflicts (JSON array):
 
     def rank_by_relevance(
         self, query: str, snippets: List[Union[str, Dict]]
-    ) -> List[Dict[str, Any]]:
+    ) -> List[Union[str, Dict]]:
         """Rank snippets by relevance to query"""
         if not snippets:
             return []
@@ -139,7 +139,7 @@ Conflicts (JSON array):
         )
 
         prompt = f"""You are a relevance ranking assistant. Rank these items by relevance to the query.
-Return ONLY a JSON array of the original items, reordered by relevance (most relevant first).
+Return ONLY a JSON array of the original items (keep the same format as input), reordered by relevance (most relevant first).
 Do not change the items themselves, only reorder.
 
 Query: {query}
@@ -163,8 +163,12 @@ Ranked JSON array:
             json_match = re.search(r"\[[^\]]*\]", resp.choices[0].message.content)
             if json_match:
                 ranked = json.loads(json_match.group())
-                return ranked
-        except:
+                # Return as dicts if input was dicts
+                if ranked and isinstance(ranked[0], dict):
+                    return ranked
+                # Convert back to dicts
+                return [self._normalize_snippet(s) for s in ranked]
+        except Exception as e:
             pass
 
         return normalized
@@ -196,7 +200,10 @@ Ranked JSON array:
 
         context = {
             "facts": [
-                self._normalize_snippet(s).get("content", str(s)) for s in snippets
+                self._normalize_snippet(s).get("content", str(s))
+                if isinstance(s, dict)
+                else str(s)
+                for s in snippets
             ],
             "summary": summary,
             "conflicts": conflicts,
