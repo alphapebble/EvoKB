@@ -5,9 +5,9 @@
 | Metric | Value | Status |
 |--------|-------|--------|
 | Q&A Accuracy | 0.0% | 🔴 |
-| Search MRR | 8.3% | 🔴 |
+| Search MRR | 33.3% | 🔴 |
 
-Last updated: 2026-04-04T07:11:39.176936
+Last updated: 2026-04-04T07:14:54.539198
 
 ## About
 
