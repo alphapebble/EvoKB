@@ -3,10 +3,10 @@ from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-from .config import CHECK_INTERVAL, RAW_DIR, WIKI_DIR, PROGRAM_MD
-from .utils import ensure_dir, read_file
-from .retriever import compile_to_wiki, run_autoresearch_iteration
-from .evaluator import score_change, apply_change, revert_change
+from evokb.config import CHECK_INTERVAL, RAW_DIR, WIKI_DIR, PROGRAM_MD
+from evokb.utils import ensure_dir, read_file
+from evokb.core.retriever import compile_to_wiki, run_autoresearch_iteration
+from evokb.evaluator import score_change, apply_change, revert_change
 
 
 class RawHandler(FileSystemEventHandler):

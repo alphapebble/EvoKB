@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Dict, Any, Optional, List
 from litellm import completion
 
-from .config import MODEL
+from evokb.config import MODEL
 
 
 class QueryIntent(Enum):

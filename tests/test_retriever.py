@@ -3,7 +3,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 
-@patch("evokb.retriever.completion")
+@patch("evokb.core.retriever.completion")
 def test_extract_keywords(mock_completion):
     from evokb.retriever import extract_keywords
 

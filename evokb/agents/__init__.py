@@ -1,3 +1,1 @@
-# EvoKB Agents
-from .librarian import LibrarianAgent
-from .agent import AgentClassifier
+# Agents module - simplified re-exports

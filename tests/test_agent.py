@@ -29,7 +29,7 @@ def test_query_intent_enum():
     assert QueryIntent.GENERAL.value == "general"
 
 
-@patch("evokb.agent.completion")
+@patch("evokb.agents.agent.completion")
 def test_classify_returns_intent(mock_completion):
     from evokb.agent import AgentClassifier, QueryIntent
 
@@ -43,7 +43,7 @@ def test_classify_returns_intent(mock_completion):
     assert isinstance(result, QueryIntent)
 
 
-@patch("evokb.agent.completion")
+@patch("evokb.agents.agent.completion")
 def test_classify_handles_unknown_intent(mock_completion):
     from evokb.agent import AgentClassifier, QueryIntent
 
@@ -57,7 +57,7 @@ def test_classify_handles_unknown_intent(mock_completion):
     assert result == QueryIntent.GENERAL
 
 
-@patch("evokb.agent.completion")
+@patch("evokb.agents.agent.completion")
 def test_extract_entities_returns_list(mock_completion):
     from evokb.agent import AgentClassifier
 
@@ -74,7 +74,7 @@ def test_extract_entities_returns_list(mock_completion):
     assert len(result) > 0
 
 
-@patch("evokb.agent.completion")
+@patch("evokb.agents.agent.completion")
 def test_extract_entities_handles_error(mock_completion):
     from evokb.agent import AgentClassifier
 
@@ -113,7 +113,7 @@ def test_get_required_action_create():
     assert action == "create_new_content"
 
 
-@patch("evokb.agent.completion")
+@patch("evokb.agents.agent.completion")
 def test_classify_with_details(mock_completion):
     from evokb.agent import AgentClassifier
 
