@@ -4,8 +4,9 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 from .config import CHECK_INTERVAL, RAW_DIR, WIKI_DIR, PROGRAM_MD
-from .utils import ensure_dir
+from .utils import ensure_dir, read_file
 from .retriever import compile_to_wiki, run_autoresearch_iteration
+from .evaluator import score_change, apply_change, revert_change, git_commit
 
 
 class RawHandler(FileSystemEventHandler):
@@ -14,6 +15,73 @@ class RawHandler(FileSystemEventHandler):
             return
         print(f"📥 New raw file: {event.src_path}")
         compile_to_wiki(Path(event.src_path))
+
+
+def parse_proposed_action(output: str) -> dict:
+    """Parse the LLM output to extract action details"""
+    result = {"action": None, "target": None, "content": None, "reasoning": None}
+
+    sections = ["REASONING:", "PROPOSED_ACTION:", "TARGET_FILE:", "NEW_CONTENT:"]
+    current_section = None
+
+    for line in output.split("\n"):
+        line = line.strip()
+        if line in sections:
+            current_section = line.lower().replace(":", "")
+            result[current_section] = ""
+        elif current_section and line:
+            result[current_section] += line + "\n"
+
+    for key in result:
+        if result[key]:
+            result[key] = result[key].strip()
+
+    return result
+
+
+def run_safe_iteration():
+    """Propose → Evaluate → Apply → Revert loop"""
+    output = run_autoresearch_iteration()
+    if not output:
+        return
+
+    parsed = parse_proposed_action(output)
+
+    if not parsed.get("action") or not parsed.get("target"):
+        print("No valid action parsed")
+        return
+
+    target_file = WIKI_DIR / parsed["target"] if parsed["target"] != "new" else None
+
+    if target_file and target_file.exists():
+        old_content = read_file(target_file)
+        new_content = parsed.get("content", "")
+
+        if new_content:
+            print(f"\n📋 Evaluating change to {parsed['target']}...")
+            eval_result = score_change(
+                new_content, ["clarity", "grounding", "coverage", "backlinks"]
+            )
+
+            print(f"   Scores: {eval_result.get('scores', {})}")
+            print(f"   Overall: {eval_result.get('overall', 0)}/10")
+            print(f"   Passed: {eval_result.get('passed', False)}")
+
+            if eval_result.get("passed", False):
+                if apply_change(target_file, new_content):
+                    print(f"✅ Applied change to {parsed['target']}")
+                    git_commit(
+                        f"Improve {parsed['target']}: {parsed.get('reasoning', 'Auto-improvement')}"
+                    )
+                else:
+                    print("❌ Failed to apply change")
+            else:
+                print("❌ Change did not pass evaluation threshold")
+    elif parsed["target"] == "new" and parsed.get("content"):
+        new_path = WIKI_DIR / "new_page.md"
+        if apply_change(new_path, parsed["content"]):
+            print(f"✅ Created new page")
+            git_commit(f"Create new page: {parsed.get('reasoning', 'New content')}")
 
 
 def main():
@@ -30,6 +98,14 @@ You are the EvoKB Librarian — an expert research assistant that maintains a hi
 - Improve existing wiki pages when new information arrives.
 - Create and evolve Knowledge Clusters for fast, reusable answers.
 - Keep everything human-auditable and editable in Obsidian/VS Code.
+
+## Self-Improvement Loop
+Follow the closed-loop pipeline:
+
+1. **Failure Mining** — Actively identify issues (inconsistent formatting, broken backlinks, weak summaries, duplicate content)
+2. **Evaluation Candidates** — Group similar issues into improvement categories
+3. **Optimization Loop** — Propose → Evaluate → Apply → Revert if needed (require ≥80% pass rate)
+4. **Regression Suite** — Track resolved issues as guardrails
 
 ## Rules
 - Never hallucinate facts — always ground in raw or existing wiki content.
@@ -50,7 +126,7 @@ You are the EvoKB Librarian — an expert research assistant that maintains a hi
     while True:
         iteration += 1
         print(f"\n--- Iteration {iteration} ---")
-        run_autoresearch_iteration()
+        run_safe_iteration()
         time.sleep(CHECK_INTERVAL)
 
 
