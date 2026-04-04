@@ -1,7 +1,7 @@
 # Evaluation Results
 
 ## Metrics
-- Q&A Accuracy: 35.8%
-- Search MRR: 83.3%
+- Q&A Accuracy: 0.0%
+- Search MRR: 17.8%
 
-Last updated: 2026-04-04T12:12:20.088803
+Last updated: 2026-04-04T06:55:26.642563
