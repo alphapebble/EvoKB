@@ -2,6 +2,6 @@
 
 ## Metrics
 - Q&A Accuracy: 0.0%
-- Search MRR: 17.8%
+- Search MRR: 8.3%
 
-Last updated: 2026-04-04T06:55:26.642563
+Last updated: 2026-04-04T06:58:50.524317
