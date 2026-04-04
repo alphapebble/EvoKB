@@ -53,6 +53,25 @@ Agents produce → raw/ → compiler → wiki_drafts/ → Hermes reviews → wik
 
 This prevents hallucinated connections from compounding in the knowledge base.
 
+## Connectors
+
+External data sources via `evokb/connectors/`:
+
+| Connector | Source | Description |
+|-----------|--------|-------------|
+| Gmail | Gmail API | Newsletters, tech articles |
+| Notion | Notion API | Labeled databases |
+
+```python
+from evokb.connectors import run_gmail_ingest, run_notion_ingest
+
+# Gmail - extracts newsletters and tech articles
+run_gmail_ingest(labels=["newsletter", "tech"])
+
+# Notion - imports from database
+run_notion_ingest(database_id="...")
+```
+
 ## Schema Evolution
 
 - Detects entities in queries (person, project, tool, concept)
@@ -69,60 +88,59 @@ This prevents hallucinated connections from compounding in the knowledge base.
 | memory_cleanup | Weekly | Archive old notes |
 | refresh_index | Daily | Update search |
 
-## File Structure
+## Directory Structure
 
 ```
 evokb/
-├── raw/              # Raw source files (fetched by ingest)
-├── wiki/             # Compiled knowledge (depth)
-├── evokb_memory.db   # SQLite (breadth)
-├── evokb_learning.json  # Routing feedback
-├── evokb_schema.json    # Schema evolution
+├── __init__.py         # Lazy re-exports
 │
-├── evokb/
-│   ├── router.py     # Query routing
-│   ├── learning.py   # Feedback loop
-│   ├── memory/      # SQL memory
-│   ├── schema_evolution.py  # Auto-schema
-│   └── ...
+├── agents/             # Agent implementations
+│   ├── agent.py        # AgentClassifier
+│   └── librarian.py    # LibrarianAgent
 │
-├── scripts/
-│   ├── ingest.py    # Fetch external data
-│   ├── compile.py   # Build wiki
-│   ├── scheduled.py # Daily/weekly jobs
-│   └── ...
+├── core/               # Core functionality
+│   ├── search.py       # SearchIndex, search_kb
+│   ├── router.py       # Query routing
+│   ├── learning.py     # Learning feedback loop
+│   ├── retriever.py    # Query/compile wiki
+│   └── context.py      # Context building
 │
-└── .github/workflows/
-    ├── 01-ingest.yml
-    ├── 02-compile.yml
-    ├── 03-test.yml
-    └── 04-autoreview.yml
+├── connectors/        # External data sources
+│   ├── gmail.py       # Gmail API
+│   └── notion.py      # Notion API
+│
+├── ingest/             # Data ingestion
+│   ├── scraper.py     # URL scraping
+│   └── schema_evolution.py  # Auto-schema
+│
+├── memory/             # SQL memory
+│   └── memory.py       # MemoryStore (SQLite)
+│
+├── hermes.py           # Review gate
+├── cluster.py         # Knowledge clusters
+├── config.py          # Configuration
+└── utils.py           # Utilities
 ```
 
 ## Usage
 
 ```bash
 # Query (auto-routes)
-evokb query "What is a knowledge graph"
-evokb query "What do I know about Sarah"
+python evokb_cli.py query "What is a knowledge graph"
+python evokb_cli.py query "What do I know about Sarah"
 
 # Search
-evokb search "knowledge"
+python evokb_cli.py search "knowledge"
 
 # Add structured data
-evokb add-note "Met with Sarah" --persons Sarah --projects AI
-evokb add-person Sarah --company Acme --role CTO
-evokb add-project "AI System"
+python evokb_cli.py add-note "Met with Sarah" --persons Sarah --projects AI
+python evokb_cli.py add-person Sarah --company Acme --role CTO
 
 # View routing
-evokb route "What is X"
+python evokb_cli.py route "What is X"
 
 # System stats
-evokb stats
-
-# Scheduled jobs
-python scripts/scheduled.py daily_summary
-python scripts/scheduled.py weekly_review
+python evokb_cli.py stats
 ```
 
 ## Privacy
