@@ -36,6 +36,7 @@ A lightweight, self-maintaining **Context Engine** powered by an **autoresearch-
 
 ## Inspired By
 - **Karpathy**: LLM = CPU, Context = RAM
+- **NotebookLM**: AI-powered research and note-taking
 
 ## Quick Start
 
