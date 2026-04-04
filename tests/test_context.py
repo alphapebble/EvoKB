@@ -4,21 +4,21 @@ from unittest.mock import patch, MagicMock
 
 
 def test_context_builder_init():
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     builder = ContextBuilder()
     assert builder.model is not None
 
 
 def test_context_builder_custom_model():
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     builder = ContextBuilder(model="gpt-4")
     assert builder.model == "gpt-4"
 
 
 def test_build_context_returns_dict():
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     builder = ContextBuilder()
     snippets = [{"content": "Test fact", "path": "test.md"}]
@@ -33,7 +33,7 @@ def test_build_context_returns_dict():
 
 
 def test_build_context_without_dedupe():
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     builder = ContextBuilder()
     snippets = [
@@ -51,7 +51,7 @@ def test_build_context_without_dedupe():
 
 
 def test_build_context_excludes_conflicts():
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     builder = ContextBuilder()
     snippets = [{"content": "Fact", "path": "a.md"}]
@@ -61,9 +61,9 @@ def test_build_context_excludes_conflicts():
     assert result["conflicts"] == []
 
 
-@patch("evokb.context.completion")
+@patch("evokb.core.context.completion")
 def test_summarize_returns_string(mock_completion):
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     mock_response = MagicMock()
     mock_response.choices = [MagicMock(message=MagicMock(content="This is a summary."))]
@@ -77,9 +77,9 @@ def test_summarize_returns_string(mock_completion):
     assert isinstance(result, str)
 
 
-@patch("evokb.context.completion")
+@patch("evokb.core.context.completion")
 def test_detect_conflicts_returns_list(mock_completion):
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     mock_response = MagicMock()
     mock_response.choices = [MagicMock(message=MagicMock(content="[]"))]
@@ -94,7 +94,7 @@ def test_detect_conflicts_returns_list(mock_completion):
 
 
 def test_build_context_convenience_function():
-    from evokb.context import build_context
+    from evokb.core.context import build_context
 
     result = build_context("test query", [{"content": "fact", "path": "test.md"}])
 
@@ -103,7 +103,7 @@ def test_build_context_convenience_function():
 
 
 def test_context_builder_handles_empty_snippets():
-    from evokb.context import ContextBuilder
+    from evokb.core.context import ContextBuilder
 
     builder = ContextBuilder()
 

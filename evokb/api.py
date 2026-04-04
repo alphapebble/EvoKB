@@ -3,10 +3,10 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 from pathlib import Path
 
-from .search import search_kb, index_wiki
-from .context import build_context
-from .agent import classify_query_details
-from .retriever import query_evo_kb
+from .core.search import search_kb, index_wiki
+from .core.context import build_context
+from .agents.agent import classify_query_details
+from .core.retriever import query_evo_kb
 
 
 app = FastAPI(

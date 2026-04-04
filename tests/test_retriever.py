@@ -5,7 +5,7 @@ from unittest.mock import patch, MagicMock
 
 @patch("evokb.core.retriever.completion")
 def test_extract_keywords(mock_completion):
-    from evokb.retriever import extract_keywords
+    from evokb.core.retriever import extract_keywords
 
     mock_response = MagicMock()
     mock_response.choices = [
@@ -19,9 +19,9 @@ def test_extract_keywords(mock_completion):
     assert "keywords" in keywords
 
 
-@patch("evokb.retriever.completion")
+@patch("evokb.core.retriever.completion")
 def test_extract_keywords_handles_error(mock_completion):
-    from evokb.retriever import extract_keywords
+    from evokb.core.retriever import extract_keywords
 
     mock_completion.side_effect = Exception("API Error")
 
@@ -35,7 +35,7 @@ def test_extract_keywords_handles_error(mock_completion):
 
 
 def test_simple_keyword_search(tmp_path):
-    from evokb.retriever import simple_keyword_search
+    from evokb.core.retriever import simple_keyword_search
 
     wiki_dir = tmp_path / "wiki"
     wiki_dir.mkdir()
@@ -52,7 +52,7 @@ def test_simple_keyword_search(tmp_path):
 
 
 def test_simple_keyword_search_empty_dir(tmp_path):
-    from evokb.retriever import simple_keyword_search
+    from evokb.core.retriever import simple_keyword_search
 
     wiki_dir = tmp_path / "empty"
     wiki_dir.mkdir()
@@ -64,7 +64,7 @@ def test_simple_keyword_search_empty_dir(tmp_path):
 
 
 def test_simple_keyword_search_max_files(tmp_path):
-    from evokb.retriever import simple_keyword_search
+    from evokb.core.retriever import simple_keyword_search
 
     wiki_dir = tmp_path / "wiki"
     wiki_dir.mkdir()
@@ -80,9 +80,9 @@ def test_simple_keyword_search_max_files(tmp_path):
     assert len(results) <= 10
 
 
-@patch("evokb.retriever.completion")
+@patch("evokb.core.retriever.completion")
 def test_monte_carlo_sample(mock_completion):
-    from evokb.retriever import monte_carlo_sample
+    from evokb.core.retriever import monte_carlo_sample
 
     mock_response = MagicMock()
     mock_response.choices = [MagicMock(message=MagicMock(content="8"))]
@@ -99,7 +99,7 @@ def test_monte_carlo_sample(mock_completion):
 
 
 def test_monte_carlo_sample_short_file(tmp_path):
-    from evokb.retriever import monte_carlo_sample
+    from evokb.core.retriever import monte_carlo_sample
 
     test_file = tmp_path / "short.md"
     test_file.write_text("Short content")
@@ -111,16 +111,16 @@ def test_monte_carlo_sample_short_file(tmp_path):
 
 
 def test_monte_carlo_sample_nonexistent_file():
-    from evokb.retriever import monte_carlo_sample
+    from evokb.core.retriever import monte_carlo_sample
 
     results = monte_carlo_sample(Path("/nonexistent/file.md"), ["test"])
 
     assert results == []
 
 
-@patch("evokb.retriever.completion")
+@patch("evokb.core.retriever.completion")
 def test_query_evo_kb_uses_existing_cluster(mock_completion, tmp_path):
-    from evokb.retriever import query_evo_kb
+    from evokb.core.retriever import query_evo_kb
 
     # Mock the LLM response
     mock_response = MagicMock()
@@ -143,14 +143,14 @@ def test_query_evo_kb_uses_existing_cluster(mock_completion, tmp_path):
 
 
 def test_compile_to_wiki_function():
-    from evokb.retriever import compile_to_wiki
+    from evokb.core.retriever import compile_to_wiki
 
     # Just verify the function exists and is callable
     assert callable(compile_to_wiki)
 
 
 def test_run_autoresearch_iteration_function():
-    from evokb.retriever import run_autoresearch_iteration
+    from evokb.core.retriever import run_autoresearch_iteration
 
     # Just verify the function exists
     assert callable(run_autoresearch_iteration)

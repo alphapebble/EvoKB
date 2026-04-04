@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test the router module."""
 
-from evokb.router import detect_intent, route_query, Route, classify_intent
+from evokb.core.router import detect_intent, route_query, Route, classify_intent
 
 
 def test_detect_intent_sql():

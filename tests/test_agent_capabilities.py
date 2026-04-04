@@ -7,7 +7,7 @@ from unittest.mock import patch, MagicMock
 
 def test_agent_reasoning():
     """Test agent reasoning capability."""
-    from evokb.agent import AgentClassifier
+    from evokb.agents.agent import AgentClassifier
 
     classifier = AgentClassifier()
 
@@ -15,7 +15,7 @@ def test_agent_reasoning():
     assert classifier is not None
 
     # Check all intent types exist
-    from evokb.agent import QueryIntent
+    from evokb.agents.agent import QueryIntent
 
     intents = list(QueryIntent)
     assert (
@@ -27,7 +27,7 @@ def test_agent_reasoning():
 
 def test_agent_tool_classification():
     """Test agent can recommend tool usage."""
-    from evokb.agent import AgentClassifier, QueryIntent
+    from evokb.agents.agent import AgentClassifier, QueryIntent
 
     classifier = AgentClassifier()
 
@@ -74,7 +74,7 @@ def test_agent_memory_cluster():
 
 def test_agent_context_awareness():
     """Test agent maintains context."""
-    from evokb.agent import AgentClassifier
+    from evokb.agents.agent import AgentClassifier
 
     classifier = AgentClassifier()
 
@@ -92,7 +92,7 @@ def test_agent_context_awareness():
 
 def test_agent_iteration():
     """Test agent can run multiple reasoning steps."""
-    from evokb.retriever import run_autoresearch_iteration
+    from evokb.core.retriever import run_autoresearch_iteration
 
     # Just verify the function exists and is callable
     assert callable(run_autoresearch_iteration)
@@ -101,7 +101,7 @@ def test_agent_iteration():
 
 def test_agent_tool_use():
     """Test agent can use tools for different tasks."""
-    from evokb.search import search_kb
+    from evokb.core.search import search_kb
     from pathlib import Path
 
     # Simulate tool use: search tool
@@ -169,7 +169,7 @@ def test_agent_self_improvement():
 
 def test_agent_reasoning_chain():
     """Test multi-step reasoning."""
-    from evokb.agent import classify_query_details
+    from evokb.agents.agent import classify_query_details
 
     # Multi-step reasoning test
     details = classify_query_details(

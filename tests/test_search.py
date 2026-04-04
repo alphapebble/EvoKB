@@ -2,7 +2,7 @@ import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from evokb.search import SearchIndex
+from evokb.core.search import SearchIndex
 
 
 def test_search_index_init(tmp_path):
@@ -66,7 +66,7 @@ def test_search_rebuild_index(tmp_path):
 
 
 def test_search_kb_convenience_function(tmp_path):
-    from evokb.search import search_kb
+    from evokb.core.search import search_kb
 
     wiki_dir = tmp_path / "wiki"
     wiki_dir.mkdir()
@@ -79,7 +79,7 @@ def test_search_kb_convenience_function(tmp_path):
 
 
 def test_index_wiki_convenience_function(tmp_path):
-    from evokb.search import index_wiki
+    from evokb.core.search import index_wiki
 
     wiki_dir = tmp_path / "wiki"
     wiki_dir.mkdir()
