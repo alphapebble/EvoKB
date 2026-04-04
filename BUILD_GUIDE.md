@@ -1,6 +1,6 @@
 # Context Engine — Production-Grade Open Source Guide
 
-A step-by-step roadmap to building a next-gen "RAG replacement" / context-engine system, inspired by Karpathy's vision and NotebookLM-like capabilities.
+A step-by-step roadmap to building a next-gen "RAG replacement" / context-engine system, inspired by Karpathy's vision.
 
 > **TL;DR**: From "retrieve documents → answer" → to "construct context → reason"
 

@@ -36,7 +36,6 @@ A lightweight, self-maintaining **Context Engine** powered by an **autoresearch-
 
 ## Inspired By
 - **Karpathy**: LLM = CPU, Context = RAM
-- **NotebookLM**: AI-powered research and note-taking
 
 ## Quick Start
 
@@ -104,6 +103,7 @@ print(answer)
 - [x] Agent classifier
 - [x] FastAPI backend
 - [x] Docker support
+- [ ] Audio Overviews (AI-generated podcasts from wiki)
 
 ## Contributing
 
