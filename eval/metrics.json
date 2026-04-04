@@ -4,7 +4,7 @@
       "query": "What is a knowledge graph?",
       "metrics": {
         "result_count": 5,
-        "avg_score": 3.4,
+        "avg_score": 4.8,
         "max_score": 5,
         "has_results": true,
         "top_title": "Data_Engineering_Fundamentals_for_AI__Building_the",
@@ -15,10 +15,21 @@
       "query": "What is dual engine architecture?",
       "metrics": {
         "result_count": 5,
-        "avg_score": 2.2,
+        "avg_score": 4.2,
+        "max_score": 5,
+        "has_results": true,
+        "top_title": "Activity-Stream_Engineering__Capturing_the_Pulse_o",
+        "mrr": 0.0
+      }
+    },
+    {
+      "query": "What is data engineering?",
+      "metrics": {
+        "result_count": 5,
+        "avg_score": 3.8,
         "max_score": 4,
         "has_results": true,
-        "top_title": "The_Dual-Engine_Architecture",
+        "top_title": "Data_Engineering_Fundamentals_for_AI__Building_the",
         "mrr": 0.0
       }
     }
@@ -43,8 +54,18 @@
         "trigram_overlap": 0.0,
         "overall_score": 0.381
       }
+    },
+    {
+      "query": "What is data engineering?",
+      "metrics": {
+        "keyword_overlap": 0.333,
+        "length_score": -42.667,
+        "containment": 0.333,
+        "trigram_overlap": 0.0,
+        "overall_score": 0.222
+      }
     }
   ],
   "scraping": [],
-  "qa_avg_score": 0.426
+  "qa_avg_score": 0.358
 }
