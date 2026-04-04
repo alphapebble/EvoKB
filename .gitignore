@@ -2,5 +2,7 @@ __pycache__/
 .venv/
 *.pyc
 *.pyo
+*.egg-info/
+.pytest_cache/
 clusters/
 .DS_Store

@@ -57,14 +57,17 @@ evokb/
 ├── wiki/             # Clean, evolving knowledge base
 ├── clusters/         # Knowledge clusters for fast retrieval
 ├── program.md        # Librarian instructions
-├── src/
+├── evokb/
+│   ├── __init__.py
 │   ├── config.py
 │   ├── librarian.py  # Main agent loop
 │   ├── retriever.py  # Indexless search + Monte Carlo
 │   ├── evaluator.py  # Score changes
 │   ├── cluster.py    # Knowledge clusters
 │   └── utils.py
-└── BUILD_GUIDE.md   # Production-grade build guide
+├── tests/            # Test suite
+├── BUILD_GUIDE.md   # Production-grade build guide
+└── pyproject.toml
 ```
 
 ## Usage
@@ -78,7 +81,7 @@ evokb
 ### Query the Knowledge Base
 
 ```python
-from src.retriever import query_evo_kb
+from evokb import query_evo_kb
 
 answer, cluster = query_evo_kb("your question here")
 print(answer)
