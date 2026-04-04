@@ -3,10 +3,9 @@ from pathlib import Path
 from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-
 from litellm import completion
 
-from .utils import read_file, list_files, ensure_dir
+from utils import read_file, list_files, ensure_dir
 
 PROGRAM_MD = Path("program.md")
 RAW_DIR = Path("raw")
@@ -16,18 +15,17 @@ CHECK_INTERVAL = 8
 
 
 def compile_to_wiki(raw_path: Path) -> str:
-    with open(raw_path, "r", encoding="utf-8") as f:
-        content = f.read()
+    content = read_file(raw_path)
 
     prompt = f"""You are an expert research librarian.
-    Turn the following raw document into a clean, structured Markdown wiki page.
-    - Add frontmatter with title, tags, summary, last_updated, related_pages
-    - Use clear headings
-    - Extract key claims and evidence
-    - Suggest 3-5 backlinks to other potential wiki pages
-    Raw content:
-    {content[:15000]}
-    """
+Turn the following raw document into a clean, structured Markdown wiki page.
+- Add frontmatter with title, tags, summary, last_updated, related_pages
+- Use clear headings
+- Extract key claims and evidence
+- Suggest 3-5 backlinks to other potential wiki pages
+Raw content:
+{content[:15000]}
+"""
 
     response = completion(
         model=MODEL,
@@ -121,7 +119,7 @@ You are the EvoKB Librarian — a careful, precise research assistant that maint
 Always check the current state of raw/ and wiki/ before proposing actions.
 """)
 
-    print("🚀 EvoKB Autoresearch Librarian started (Org: alphapebble)")
+    print("🚀 EvoKB Autoresearch Librarian started")
     print("Drop files into raw/ folder.\n")
 
     event_handler = RawHandler()

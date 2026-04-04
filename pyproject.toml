@@ -13,7 +13,8 @@ dependencies = [
     "markdown",
     "duckdb",
     "langgraph",
+    "tqdm",
 ]
 
 [project.scripts]
-evokb = "src.librarian:main"
+evokb = "librarian:main"
