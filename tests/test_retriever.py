@@ -118,8 +118,16 @@ def test_monte_carlo_sample_nonexistent_file():
     assert results == []
 
 
-def test_query_evo_kb_uses_existing_cluster(tmp_path):
+@patch("evokb.retriever.completion")
+def test_query_evo_kb_uses_existing_cluster(mock_completion, tmp_path):
     from evokb.retriever import query_evo_kb
+
+    # Mock the LLM response
+    mock_response = MagicMock()
+    mock_response.choices = [
+        MagicMock(message=MagicMock(content="This is a test answer"))
+    ]
+    mock_completion.return_value = mock_response
 
     wiki_dir = tmp_path / "wiki"
     wiki_dir.mkdir()
