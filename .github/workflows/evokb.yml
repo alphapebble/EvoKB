@@ -22,14 +22,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Fetch raw data
-        run: |
-          mkdir -p raw
-          echo "# Placeholder" > raw/placeholder.md
-
-      - name: Compile raw to wiki
-        run: python3 scripts/compile.py
-
       - name: Run tests
         run: python3 -m pytest tests/ -q
 
@@ -46,14 +38,6 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Fetch raw data
-        run: |
-          mkdir -p raw
-          echo "# Placeholder" > raw/placeholder.md
-
-      - name: Compile raw to wiki
-        run: python3 scripts/compile.py
 
       - name: Run evaluation
         run: python3 test_accuracy.py
