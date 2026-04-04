@@ -4,10 +4,10 @@
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Q&A Accuracy | 35.8% | 🟡 |
-| Search MRR | 83.3% | 🟢 |
+| Q&A Accuracy | 0.0% | 🔴 |
+| Search MRR | 8.3% | 🔴 |
 
-Last updated: 2026-04-04T12:36:51.680264
+Last updated: 2026-04-04T07:07:56.951905
 
 ## About
 
