@@ -2,8 +2,8 @@ from typing import List, Dict, Any, Union
 from pathlib import Path
 from litellm import completion
 
-from evokb.config import MODEL
-from evokb.utils import read_file
+from evokb.core.config import MODEL
+from evokb.core.utils import read_file
 
 
 class ContextBuilder:

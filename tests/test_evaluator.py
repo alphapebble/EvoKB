@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 
 
 def test_apply_change_creates_backup(tmp_path):
-    from evokb.evaluator import apply_change
+    from evokb.eval.evaluator import apply_change
 
     test_file = tmp_path / "test.md"
     test_file.write_text("original content")
@@ -19,7 +19,7 @@ def test_apply_change_creates_backup(tmp_path):
 
 
 def test_apply_change_no_backup_for_new_file(tmp_path):
-    from evokb.evaluator import apply_change
+    from evokb.eval.evaluator import apply_change
 
     test_file = tmp_path / "new.md"
 
@@ -30,7 +30,7 @@ def test_apply_change_no_backup_for_new_file(tmp_path):
 
 
 def test_apply_change_disabled_backup(tmp_path):
-    from evokb.evaluator import apply_change
+    from evokb.eval.evaluator import apply_change
 
     test_file = tmp_path / "test.md"
     test_file.write_text("original")
@@ -43,7 +43,7 @@ def test_apply_change_disabled_backup(tmp_path):
 
 
 def test_revert_change(tmp_path):
-    from evokb.evaluator import apply_change, revert_change
+    from evokb.eval.evaluator import apply_change, revert_change
 
     test_file = tmp_path / "test.md"
     test_file.write_text("original")
@@ -58,7 +58,7 @@ def test_revert_change(tmp_path):
 
 
 def test_revert_change_no_backup(tmp_path):
-    from evokb.evaluator import revert_change
+    from evokb.eval.evaluator import revert_change
 
     test_file = tmp_path / "test.md"
     test_file.write_text("current")
@@ -68,9 +68,9 @@ def test_revert_change_no_backup(tmp_path):
     assert result is False
 
 
-@patch("evokb.evaluator.completion")
+@patch("evokb.eval.evaluator.completion")
 def test_score_change_parses_json(mock_completion):
-    from evokb.evaluator import score_change
+    from evokb.eval.evaluator import score_change
 
     mock_response = MagicMock()
     mock_response.choices = [
@@ -89,9 +89,9 @@ def test_score_change_parses_json(mock_completion):
     assert result["passed"] is True
 
 
-@patch("evokb.evaluator.completion")
+@patch("evokb.eval.evaluator.completion")
 def test_score_change_fails_below_threshold(mock_completion):
-    from evokb.evaluator import score_change
+    from evokb.eval.evaluator import score_change
 
     mock_response = MagicMock()
     mock_response.choices = [
@@ -105,9 +105,9 @@ def test_score_change_fails_below_threshold(mock_completion):
     assert result["passed"] is False
 
 
-@patch("evokb.evaluator.completion")
+@patch("evokb.eval.evaluator.completion")
 def test_score_change_handles_error(mock_completion):
-    from evokb.evaluator import score_change
+    from evokb.eval.evaluator import score_change
 
     mock_completion.side_effect = Exception("API Error")
 

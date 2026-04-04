@@ -47,7 +47,7 @@ def test_agent_tool_classification():
 
 def test_agent_memory_cluster():
     """Test agent memory via cluster storage."""
-    from evokb.cluster import KnowledgeCluster, ClusterStore
+    from evokb.memory.cluster import KnowledgeCluster, ClusterStore
 
     # Create a cluster (memory entry)
     cluster = KnowledgeCluster(
@@ -119,7 +119,7 @@ def test_agent_tool_use():
 def test_agent_memory_persistence():
     """Test agent memory persists across sessions."""
     import os
-    from evokb.cluster import ClusterStore, KnowledgeCluster
+    from evokb.memory.cluster import ClusterStore, KnowledgeCluster
 
     db_path = "/tmp/test_evokb_memory.db"
 
@@ -152,7 +152,7 @@ def test_agent_memory_persistence():
 
 def test_agent_self_improvement():
     """Test agent can improve its own outputs."""
-    from evokb.evaluator import score_change
+    from evokb.eval.evaluator import score_change
 
     # Agent proposes change
     original_content = "# Old Content\nThis is outdated."

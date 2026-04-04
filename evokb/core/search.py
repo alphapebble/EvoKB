@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 from typing import List, Dict, Any
 
-from evokb.utils import read_file, list_files
+from evokb.core.utils import read_file, list_files
 
 
 class SearchIndex:

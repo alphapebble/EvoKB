@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 def test_knowledge_cluster_creation():
-    from evokb.cluster import KnowledgeCluster
+    from evokb.memory.cluster import KnowledgeCluster
 
     cluster = KnowledgeCluster(
         query="test query",
@@ -20,7 +20,7 @@ def test_knowledge_cluster_creation():
 
 
 def test_cluster_to_dict():
-    from evokb.cluster import KnowledgeCluster
+    from evokb.memory.cluster import KnowledgeCluster
 
     cluster = KnowledgeCluster(
         query="test", evidences=[], summary="summary", confidence=80
@@ -36,7 +36,7 @@ def test_cluster_to_dict():
 
 
 def test_cluster_from_dict():
-    from evokb.cluster import KnowledgeCluster
+    from evokb.memory.cluster import KnowledgeCluster
 
     original = KnowledgeCluster(
         query="original query", evidences=[], summary="original summary", confidence=75
@@ -51,7 +51,7 @@ def test_cluster_from_dict():
 
 
 def test_cluster_use_count_increment():
-    from evokb.cluster import KnowledgeCluster
+    from evokb.memory.cluster import KnowledgeCluster
 
     cluster = KnowledgeCluster(
         query="test", evidences=[], summary="summary", confidence=80
@@ -64,7 +64,7 @@ def test_cluster_use_count_increment():
 
 
 def test_cluster_history_append():
-    from evokb.cluster import KnowledgeCluster
+    from evokb.memory.cluster import KnowledgeCluster
 
     cluster = KnowledgeCluster(
         query="query1", evidences=[], summary="summary", confidence=80

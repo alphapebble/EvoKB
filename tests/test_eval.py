@@ -130,7 +130,7 @@ def test_eval_module_imports():
 
 def test_reporting_module():
     """Test reporting functions."""
-    from evokb import reporting
+    from evokb.reporting import reporting
 
     assert hasattr(reporting, "run_and_report")
     assert hasattr(reporting, "generate_dashboard_html")

@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 from litellm import completion
 
-from .config import MODEL
-from .utils import read_file
+from evokb.core.config import MODEL
+from evokb.core.utils import read_file
 
 
 def score_change(content: str, criteria: list) -> dict:

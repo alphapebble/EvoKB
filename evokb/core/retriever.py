@@ -4,9 +4,9 @@ from pathlib import Path
 from datetime import datetime
 from litellm import completion
 
-from evokb.cluster import KnowledgeCluster, ClusterStore
-from evokb.utils import read_file, list_files, ensure_dir
-from evokb.config import MODEL, RAW_DIR, WIKI_DIR, PROGRAM_MD
+from evokb.memory.cluster import KnowledgeCluster, ClusterStore
+from evokb.core.utils import read_file, list_files, ensure_dir
+from evokb.core.config import MODEL, RAW_DIR, WIKI_DIR, PROGRAM_MD
 
 MAX_SAMPLES = 8
 MAX_ROUNDS = 3
