@@ -1,0 +1,36 @@
+name: Autoreview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  autoreview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore wiki from git
+        run: git checkout HEAD -- wiki/
+
+      - name: Run autoreview loop
+        run: python run_autoreview.py --iterations 2
+
+      - name: Commit wiki improvements
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Autoreview: improve wiki content"
+          file_pattern: wiki/*

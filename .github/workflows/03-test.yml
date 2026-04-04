@@ -1,0 +1,42 @@
+name: Test & Evaluate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore wiki from git
+        run: git checkout HEAD -- wiki/
+
+      - name: Run tests
+        run: python -m pytest tests/ -q --tb=short
+
+      - name: Run evaluation
+        run: python test_accuracy.py
+
+      - name: Update eval README
+        run: python scripts/update_readme.py
+
+      - name: Commit eval updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Evaluate: update metrics"
+          file_pattern: eval/*

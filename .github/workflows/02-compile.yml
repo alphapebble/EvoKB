@@ -1,0 +1,33 @@
+name: Compile
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'raw/**'
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run compile agent
+        run: python scripts/compile.py
+
+      - name: Commit compiled wiki
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Compile: build wiki from raw"
+          file_pattern: wiki/*
