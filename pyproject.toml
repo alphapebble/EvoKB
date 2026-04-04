@@ -6,10 +6,6 @@ readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["evokb*"]
-
 dependencies = [
     "litellm>=1.0",
     "ollama",
@@ -19,16 +15,18 @@ dependencies = [
     "duckdb",
     "langgraph",
     "tqdm",
-    "tantivy",
+    "tantivy>=0.22",
     "fastapi",
     "uvicorn",
+    "pydantic>=2.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest",
+    "pytest-asyncio",
 ]
 
 [project.scripts]
 evokb = "evokb.librarian:main"
-evokb-api = "evokb.api:main"
+evokb-api = "evokb.api:app"
