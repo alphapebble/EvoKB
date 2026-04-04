@@ -4,8 +4,8 @@
 import sys
 from pathlib import Path
 from evokb.eval import evaluate_qa_accuracy, evaluate_search_quality
-from evokb.search import search_kb
-from evokb.retriever import query_evo_kb
+from evokb.core.search import search_kb
+from evokb.core.retriever import query_evo_kb
 
 
 def test_qa_accuracy():
