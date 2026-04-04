@@ -9,7 +9,7 @@ on:
     - cron: '0 2 * * *'
 
 jobs:
-  test:
+  test-and-eval:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,20 +24,6 @@ jobs:
 
       - name: Run tests
         run: python3 -m pytest tests/ -q --tb=short
-
-  eval:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
 
       - name: Run evaluation
         run: python3 test_accuracy.py
