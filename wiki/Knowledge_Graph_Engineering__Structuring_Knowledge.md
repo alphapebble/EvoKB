@@ -1,5 +1,11 @@
+---
+title: Knowledge Graph Engineering
+date: 2025-12-09
+source: AlphaPebble
+tags: [knowledge-graphs, ai-engineering, reasoning]
+---
+
 # Knowledge Graph Engineering: Structuring Knowledge for AI
-==========================
 
 ## Tags
 * Knowledge Graphs
