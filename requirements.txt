@@ -1,0 +1,7 @@
+litellm
+fastapi
+watchdog
+pytest
+beautifulsoup4
+trafilatura
+requests
