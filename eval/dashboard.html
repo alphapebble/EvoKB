@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EvoKB Dashboard</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; padding: 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        h2 { color: #666; margin-top: 0; }
+        .metric { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .metric-value { font-weight: bold; color: #2563eb; font-size: 24px; }
+        .good { color: #16a34a; }
+        .warning { color: #ca8a04; }
+        .bad { color: #dc2626; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 EvoKB Dashboard</h1>
+        <p>Generated: 2026-04-04 11:07:56</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>Search Quality (MRR)</h2>
+                <div class="metric-value bad">0.00</div>
+                <p>Mean Reciprocal Rank - higher is better</p>
+            </div>
+            
+            <div class="card">
+                <h2>Q&A Accuracy</h2>
+                <div class="metric-value warning">0.43</div>
+                <p>Overall answer quality score</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Recent Queries</h2>
+            <div class="metric">
+                <span>What is a knowledge graph?</span>
+                <span>5 results</span>
+            </div>
+            <div class="metric">
+                <span>What is dual engine architecture?</span>
+                <span>5 results</span>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

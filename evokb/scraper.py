@@ -1,149 +1,135 @@
-"""Web scraper for extracting content from websites."""
+"""Better web scraper using trafilatura (best-in-class for content extraction)."""
 
 import re
 from pathlib import Path
-from typing import List, Dict, Any
-from urllib.parse import urljoin
+from typing import List, Dict, Any, Optional
 
 try:
-    import requests
-    from bs4 import BeautifulSoup
+    import trafilatura
 
-    HAS_WEB_DEPS = True
+    HAS_TRAFILATURA = True
 except ImportError:
-    HAS_WEB_DEPS = False
+    HAS_TRAFILATURA = False
 
 
-def fetch_page(url: str) -> str:
-    """Fetch a web page and return HTML"""
-    if not HAS_WEB_DEPS:
-        raise ImportError(
-            "Install requests and beautifulsoup4: pip install requests beautifulsoup4"
-        )
+def scrape_url_trafilatura(url: str) -> Dict[str, Any]:
+    """Scrape URL using trafilatura (best content extraction)."""
+    if not HAS_TRAFILATURA:
+        raise ImportError("Install trafilatura: pip install trafilatura")
 
-    response = requests.get(url, timeout=30)
-    response.raise_for_status()
-    return response.text
-
-
-def parse_html(html: str) -> BeautifulSoup:
-    """Parse HTML with BeautifulSoup"""
-    return BeautifulSoup(html, "html.parser")
-
-
-def extract_main_content(soup: BeautifulSoup) -> str:
-    """Extract main content from page"""
-    # Remove script and style elements
-    for script in soup(["script", "style", "nav", "footer", "header"]):
-        script.decompose()
-
-    # Try common content selectors
-    content = (
-        soup.find("main") or soup.find("article") or soup.find("div", class_="content")
+    # Fetch and extract
+    result = trafilatura.extract(
+        url,
+        include_comments=False,
+        include_tables=True,
+        include_images=False,
+        output_format="json",
     )
 
-    if content:
-        return content.get_text(separator="\n", strip=True)
+    if result:
+        import json
 
-    return soup.get_text(separator="\n", strip=True)
+        data = json.loads(result)
+        return {
+            "url": url,
+            "title": data.get("title", ""),
+            "content": data.get("text", ""),
+            "description": data.get("description", ""),
+            "author": data.get("author", ""),
+            "date": data.get("date", ""),
+            "categories": data.get("categories", []),
+            "tags": data.get("tags", []),
+        }
 
-
-def extract_title(soup: BeautifulSoup) -> str:
-    """Extract page title"""
-    title = soup.find("h1")
-    if title:
-        return title.get_text(strip=True)
-    return soup.title.string if soup.title else "Untitled"
-
-
-def extract_metadata(soup: BeautifulSoup) -> Dict[str, str]:
-    """Extract metadata"""
-    meta = {}
-    for tag in soup.find_all("meta"):
-        name = tag.get("name") or tag.get("property")
-        content = tag.get("content")
-        if name and content:
-            meta[name] = content
-    return meta
+    return {"url": url, "error": "No content extracted"}
 
 
-def scrape_url(url: str) -> Dict[str, Any]:
-    """Scrape a single URL"""
-    html = fetch_page(url)
-    soup = parse_html(html)
-
-    return {
-        "url": url,
-        "title": extract_title(soup),
-        "content": extract_main_content(soup),
-        "metadata": extract_metadata(soup),
-    }
-
-
-def scrape_links(url: str, selector: str = "a") -> List[str]:
-    """Get all links from a page"""
-    html = fetch_page(url)
-    soup = parse_html(html)
-
-    links = []
-    for link in soup.find_all(selector, href=True):
-        href = link.get("href")
-        if href:
-            full_url = urljoin(url, href)
-            if full_url.startswith("http"):
-                links.append(full_url)
-
-    return list(set(links))
+def scrape_urls_trafilatura(urls: List[str]) -> List[Dict[str, Any]]:
+    """Scrape multiple URLs using trafilatura."""
+    results = []
+    for url in urls:
+        try:
+            result = scrape_url_trafilatura(url)
+            results.append(result)
+        except Exception as e:
+            results.append({"url": url, "error": str(e)})
+    return results
 
 
-def scrape_playbooks(base_url: str, output_dir: Path) -> List[Path]:
-    """Scrape playbook articles and save as markdown"""
-    if not HAS_WEB_DEPS:
-        raise ImportError("Install requests and beautifulsoup4")
-
+def save_as_markdown(data: Dict[str, Any], output_dir: Path) -> Path:
+    """Save scraped content as markdown."""
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Get all playbook links
-    links = scrape_links(base_url)
+    # Create filename from title
+    title = data.get("title", "untitled")
+    filename = re.sub(r"[^\w\-]", "_", title[:50]) + ".md"
+    output_file = output_dir / filename
 
-    output_files = []
-    for link in links:
-        try:
-            print(f"Scraping: {link}")
-            data = scrape_url(link)
+    # Build markdown
+    content = f"""# {data.get("title", "Untitled")}
 
-            # Convert to markdown
-            md_content = f"""# {data["title"]}
+**Source:** {data.get("url", "")}
 
-**Source:** {data["url"]}
-
----
-
-{data["content"]}
 """
 
-            # Save to file
-            filename = re.sub(r"[^\w\-]", "_", data["title"][:50]) + ".md"
-            output_file = output_dir / filename
-            output_file.write_text(md_content)
-            output_files.append(output_file)
-            print(f"Saved: {filename}")
+    if data.get("description"):
+        content += f"*{data.get('description')}*\n\n"
 
-        except Exception as e:
-            print(f"Error scraping {link}: {e}")
+    content += "---\n\n"
+    content += data.get("content", "")
+
+    output_file.write_text(content)
+    return output_file
+
+
+def scrape_and_save(urls: List[str], output_dir: Path) -> List[Path]:
+    """Scrape URLs and save as markdown files."""
+    results = scrape_urls_trafilatura(urls)
+
+    output_files = []
+    for data in results:
+        if "error" not in data and data.get("content"):
+            output_file = save_as_markdown(data, output_dir)
+            output_files.append(output_file)
 
     return output_files
 
 
-# Test with a URL
-if __name__ == "__main__":
-    import sys
+# Fallback scraper using requests + readability if trafilatura not available
+def scrape_url_fallback(url: str) -> Dict[str, Any]:
+    """Fallback scraper using requests + beautifulsoup."""
+    import requests
+    from bs4 import BeautifulSoup
 
-    if len(sys.argv) > 1:
-        url = sys.argv[1]
-        output_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("raw")
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
 
-        files = scrape_playbooks(url, output_dir)
-        print(f"\nScraped {len(files)} pages")
-    else:
-        print("Usage: python -m evokb.scraper <url> [output_dir]")
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    # Remove unwanted elements
+    for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
+        tag.decompose()
+
+    # Get title
+    title = soup.title.string if soup.title else "Untitled"
+
+    # Get main content
+    main = soup.find("main") or soup.find("article") or soup.find("div", role="main")
+    content = (
+        main.get_text(separator="\n", strip=True)
+        if main
+        else soup.get_text(separator="\n", strip=True)
+    )
+
+    return {"url": url, "title": title, "content": content}
+
+
+def scrape_url(url: str) -> Dict[str, Any]:
+    """Primary scrape function - uses best available method."""
+    if HAS_TRAFILATURA:
+        try:
+            return scrape_url_trafilatura(url)
+        except:
+            pass
+
+    return scrape_url_fallback(url)

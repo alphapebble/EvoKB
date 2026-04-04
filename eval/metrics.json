@@ -1,0 +1,50 @@
+{
+  "search": [
+    {
+      "query": "What is a knowledge graph?",
+      "metrics": {
+        "result_count": 5,
+        "avg_score": 3.4,
+        "max_score": 5,
+        "has_results": true,
+        "top_title": "Data_Engineering_Fundamentals_for_AI__Building_the",
+        "mrr": 0.0
+      }
+    },
+    {
+      "query": "What is dual engine architecture?",
+      "metrics": {
+        "result_count": 5,
+        "avg_score": 2.2,
+        "max_score": 4,
+        "has_results": true,
+        "top_title": "The_Dual-Engine_Architecture",
+        "mrr": 0.0
+      }
+    }
+  ],
+  "qa": [
+    {
+      "query": "What is a knowledge graph?",
+      "metrics": {
+        "keyword_overlap": 0.625,
+        "length_score": -33.97,
+        "containment": 0.625,
+        "trigram_overlap": 0.167,
+        "overall_score": 0.472
+      }
+    },
+    {
+      "query": "What is dual engine architecture?",
+      "metrics": {
+        "keyword_overlap": 0.571,
+        "length_score": -41.064,
+        "containment": 0.571,
+        "trigram_overlap": 0.0,
+        "overall_score": 0.381
+      }
+    }
+  ],
+  "scraping": [],
+  "qa_avg_score": 0.426
+}
