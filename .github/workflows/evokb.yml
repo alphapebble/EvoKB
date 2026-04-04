@@ -24,6 +24,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Start Ollama
+        run: |
+          docker run -d --name ollama -p 11434:11434 ollama/ollama:latest || true
+          sleep 30
+          docker exec ollama pull llama3.2 || true
+
       - name: Run full tests
         run: python -m pytest tests/ -q --tb=short
 
@@ -56,6 +62,12 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Start Ollama
+        run: |
+          docker run -d --name ollama -p 11434:11434 ollama/ollama:latest || true
+          sleep 30
+          docker exec ollama pull llama3.2 || true
 
       - name: Run autoreview loop
         run: python run_autoreview.py --iterations 2
