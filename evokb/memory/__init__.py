@@ -1,3 +1,13 @@
+"""
+EvoKB Memory Module - SQL-based structured memory
+
+Ethical Usage:
+- Only store data about people you have legitimate relationship with
+- Don't store sensitive/personal info without consent
+- Keep the database private (already in .gitignore)
+- See PRIVACY.md for full guidelines
+"""
+
 from datetime import datetime
 from typing import List, Optional, Dict, Any
 from pathlib import Path

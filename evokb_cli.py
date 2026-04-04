@@ -2,6 +2,11 @@
 """
 EvoKB CLI - Main entry point for the knowledge base system
 
+Ethical Usage:
+- Only add people you have legitimate relationship with
+- Don't store sensitive data without consent
+- See PRIVACY.md for guidelines
+
 Usage:
     evokb query "What is a knowledge graph?"
     evokb search "knowledge"
