@@ -5,6 +5,11 @@ description = "Self-evolving Markdown knowledge base with autoresearch-style LLM
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
 dependencies = [
     "litellm>=1.0",
     "ollama",
@@ -17,4 +22,4 @@ dependencies = [
 ]
 
 [project.scripts]
-evokb = "librarian:main"
+evokb = "src.librarian:main"

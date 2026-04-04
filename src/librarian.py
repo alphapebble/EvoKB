@@ -5,13 +5,8 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from litellm import completion
 
-from utils import read_file, list_files, ensure_dir
-
-PROGRAM_MD = Path("program.md")
-RAW_DIR = Path("raw")
-WIKI_DIR = Path("wiki")
-MODEL = "ollama/llama3.2"
-CHECK_INTERVAL = 8
+from .config import MODEL, CHECK_INTERVAL, RAW_DIR, WIKI_DIR, PROGRAM_MD
+from .utils import read_file, list_files, ensure_dir
 
 
 def compile_to_wiki(raw_path: Path) -> str:

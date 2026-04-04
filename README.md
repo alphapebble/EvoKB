@@ -22,10 +22,13 @@ evokb/
 ├── raw/              # Drop papers, web clips, notes here
 ├── wiki/             # LLM-compiled clean Markdown wiki (source of truth)
 ├── clusters/         # Evolving Knowledge Clusters (DuckDB)
-├── librarian.py      # Main compilation + backlink agent + file watcher
-├── retriever.py      # Smart retrieval with keyword search + Monte Carlo sampling
-├── cluster.py        # Knowledge Cluster class + DuckDB store
-├── utils.py          # File utilities
+├── src/
+│   ├── __init__.py
+│   ├── config.py     # Configuration
+│   ├── librarian.py # Main compilation + backlink agent + file watcher
+│   ├── retriever.py # Smart retrieval with keyword search + Monte Carlo sampling
+│   ├── cluster.py   # Knowledge Cluster class + DuckDB store
+│   └── utils.py     # File utilities
 ├── program.md        # Librarian instructions
 └── pyproject.toml
 ```
@@ -53,7 +56,8 @@ uv pip install -e .
 
 mkdir -p raw wiki clusters
 
-python -m librarian
+evokb
+# or: python -m src.librarian
 ```
 
 ## Usage
@@ -61,7 +65,8 @@ python -m librarian
 ### Start the Librarian
 
 ```bash
-python -m librarian
+evokb
+# or: python -m src.librarian
 ```
 
 Drop files into `raw/` (Markdown, PDF, TXT). The librarian automatically:
@@ -72,7 +77,7 @@ Drop files into `raw/` (Markdown, PDF, TXT). The librarian automatically:
 ### Query the Knowledge Base
 
 ```python
-from retriever import query_evo_kb
+from src.retriever import query_evo_kb
 
 answer, cluster = query_evo_kb("your question here")
 print(answer)

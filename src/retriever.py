@@ -2,8 +2,8 @@ import random
 from pathlib import Path
 from litellm import completion
 
-from cluster import KnowledgeCluster, ClusterStore
-from utils import read_file, list_files
+from .cluster import KnowledgeCluster, ClusterStore
+from .utils import read_file, list_files
 
 MODEL = "ollama/llama3.2"
 
