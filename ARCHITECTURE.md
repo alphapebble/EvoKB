@@ -24,6 +24,34 @@ Query → Router → [Wiki | SQL | Search]
 | **Compile** | on raw/* | Build wiki from raw |
 | **Test** | on push | Run tests + evaluation |
 | **Autoreview** | on push | Self-improve wiki |
+| **Hermes** | on push | Review & validate articles before publish |
+
+## Hermes - The Review Gate
+
+Hermes is the supervisor agent that sits between drafts and live knowledge:
+
+```
+Agents produce → raw/ → compiler → wiki_drafts/ → Hermes reviews → wiki (live)
+                                              ↓
+                                    bad articles die in drafts
+                                              ↓
+                                    good articles promoted to live
+```
+
+**Scoring criteria:**
+- Length (too short = incomplete)
+- Structure (has headers)
+- Content quality (specificity, technical depth)
+- Credibility (no obvious hallucinations)
+- Source attribution
+
+**Flow:**
+1. Articles scored before entering permanent brain
+2. High quality (≥0.7) → auto-promoted
+3. Medium (0.5-0.7) → needs manual review
+4. Low (<0.5) → rejected
+
+This prevents hallucinated connections from compounding in the knowledge base.
 
 ## Schema Evolution
 

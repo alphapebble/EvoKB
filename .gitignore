@@ -7,3 +7,8 @@ __pycache__/
 clusters/
 .DS_Store
 raw/
+wiki_drafts/
+evokb_memory.db
+evokb_learning.json
+evokb_schema.json
+evokb_article_scores.json

@@ -75,6 +75,21 @@ jobs:
           commit_message: "Autoreview: improve wiki content"
           file_pattern: wiki/*
 
+      # ===== 05-HERMES =====
+      - name: "[5/5] Hermes: Review and validate articles"
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git checkout HEAD -- wiki/ 2>/dev/null || true
+          python -c "from evokb.hermes import run_hermes; run_hermes()" || echo "Hermes skipped"
+        id: hermes
+
+      - name: Commit Hermes-reviewed articles
+        if: github.ref == 'refs/heads/main'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Hermes: validate article quality"
+          file_pattern: wiki/*
+
       - name: Summary
         run: |
           echo "✅ Pipeline complete"
@@ -82,3 +97,4 @@ jobs:
           echo "  - Compile: ${{ steps.compile.outcome }}"
           echo "  - Test: ${{ steps.test.outcome }}"
           echo "  - Autoreview: ${{ steps.autoreview.outcome }}"
+          echo "  - Hermes: ${{ steps.hermes.outcome }}"
