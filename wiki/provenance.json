@@ -6,7 +6,7 @@
       "source_type": "file",
       "content_hash": null,
       "query": null,
-      "tracked_at": "2026-04-05T10:30:21.715307"
+      "tracked_at": "2026-04-05T10:59:27.868293"
     },
     {
       "file": "file2.md",
@@ -14,7 +14,7 @@
       "source_type": "file",
       "content_hash": null,
       "query": null,
-      "tracked_at": "2026-04-05T10:30:21.715663"
+      "tracked_at": "2026-04-05T10:59:27.868583"
     },
     {
       "file": "test.md",
@@ -22,7 +22,7 @@
       "source_type": "file",
       "content_hash": null,
       "query": null,
-      "tracked_at": "2026-04-05T10:30:21.716796"
+      "tracked_at": "2026-04-05T10:59:27.869791"
     }
   ],
   "by_file": {
@@ -32,7 +32,7 @@
       "source_type": "file",
       "content_hash": null,
       "query": null,
-      "tracked_at": "2026-04-05T10:30:21.715307"
+      "tracked_at": "2026-04-05T10:59:27.868293"
     },
     "file2.md": {
       "file": "file2.md",
@@ -40,7 +40,7 @@
       "source_type": "file",
       "content_hash": null,
       "query": null,
-      "tracked_at": "2026-04-05T10:30:21.715663"
+      "tracked_at": "2026-04-05T10:59:27.868583"
     },
     "test.md": {
       "file": "test.md",
@@ -48,8 +48,8 @@
       "source_type": "file",
       "content_hash": null,
       "query": "What is AI?",
-      "tracked_at": "2026-04-05T10:30:21.716796",
-      "derived_from_query_at": "2026-04-05T10:30:21.717144"
+      "tracked_at": "2026-04-05T10:59:27.869791",
+      "derived_from_query_at": "2026-04-05T10:59:27.870058"
     }
   }
 }

@@ -20,6 +20,8 @@ dependencies = [
     "pydantic>=2.0",
     "requests",
     "beautifulsoup4",
+    "tantivy",
+    "pyyaml",
 ]
 
 [project.optional-dependencies]

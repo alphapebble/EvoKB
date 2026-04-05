@@ -1,0 +1,39 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+.eggs
+build/
+dist/
+.venv/
+venv/
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# Tests
+tests/
+*.test.py
+
+# Docs
+docs/
+BUILD_GUIDE.md
+ARCHITECTURE.md
+
+# Local data
+raw/
+wiki/
+clusters/
+*.md
+
+# CI/CD
+.github/
