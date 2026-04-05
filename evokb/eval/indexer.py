@@ -30,14 +30,16 @@ def extract_frontmatter(content: str) -> Dict:
 
 def extract_summary(content: str) -> str:
     """Extract summary from content."""
-    parts = content.split("---", 2)
-    if len(parts) >= 3:
-        body = parts[2].strip()
-        lines = body.split("\n")
-        for line in lines:
-            line = line.strip()
-            if line and not line.startswith("#"):
-                return line[:150]
+    if content.startswith("---"):
+        parts = content.split("---", 2)
+        if len(parts) >= 3:
+            content = parts[2]
+
+    lines = content.split("\n")
+    for line in lines:
+        line = line.strip()
+        if line and not line.startswith("#"):
+            return line[:150]
     return ""
 
 

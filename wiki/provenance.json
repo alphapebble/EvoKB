@@ -1,0 +1,55 @@
+{
+  "records": [
+    {
+      "file": "file1.md",
+      "source": "raw/1.md",
+      "source_type": "file",
+      "content_hash": null,
+      "query": null,
+      "tracked_at": "2026-04-05T08:29:42.944290"
+    },
+    {
+      "file": "file2.md",
+      "source": "raw/2.md",
+      "source_type": "file",
+      "content_hash": null,
+      "query": null,
+      "tracked_at": "2026-04-05T08:29:42.945324"
+    },
+    {
+      "file": "test.md",
+      "source": "raw/test.md",
+      "source_type": "file",
+      "content_hash": null,
+      "query": null,
+      "tracked_at": "2026-04-05T08:29:42.945991"
+    }
+  ],
+  "by_file": {
+    "file1.md": {
+      "file": "file1.md",
+      "source": "raw/1.md",
+      "source_type": "file",
+      "content_hash": null,
+      "query": null,
+      "tracked_at": "2026-04-05T08:29:42.944290"
+    },
+    "file2.md": {
+      "file": "file2.md",
+      "source": "raw/2.md",
+      "source_type": "file",
+      "content_hash": null,
+      "query": null,
+      "tracked_at": "2026-04-05T08:29:42.945324"
+    },
+    "test.md": {
+      "file": "test.md",
+      "source": "raw/test.md",
+      "source_type": "file",
+      "content_hash": null,
+      "query": "What is AI?",
+      "tracked_at": "2026-04-05T08:29:42.945991",
+      "derived_from_query_at": "2026-04-05T08:29:42.946255"
+    }
+  }
+}

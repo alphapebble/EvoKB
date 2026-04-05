@@ -187,13 +187,14 @@ def check_contradictions(wiki_dir: Path = None) -> Dict:
         (r"all", r"none"),
         (r"every", r"no"),
     ]
+    patterns = list(contradiction_patterns)
 
     for md_file in list_files(wiki_dir, "*.md"):
         content = read_file(md_file)
         if not content:
             continue
 
-        for pos_pattern, neg_pattern in contradiction_patterns:
+        for pos_pattern, neg_pattern in patterns:
             if re.search(pos_pattern, content, re.I) and re.search(
                 neg_pattern, content, re.I
             ):
