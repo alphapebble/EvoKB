@@ -249,7 +249,7 @@ def print_lint_report(report: Dict):
     print("WIKI HEALTH REPORT")
     print("=" * 60)
 
-    print(f"\n📊 Health Score: {report['health_score']}/100")
+    print(f"\n[HEALTH] Score: {report['health_score']}/100")
     print(f"Total Issues: {report['total_issues']}")
 
     print("\n--- ORPHANS (no inbound links) ---")

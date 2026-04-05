@@ -13,7 +13,7 @@ class RawHandler(FileSystemEventHandler):
     def on_created(self, event):
         if event.is_directory or not event.src_path.endswith((".md", ".pdf", ".txt")):
             return
-        print(f"📥 New raw file: {event.src_path}")
+        print(f"[INFO] New raw file: {event.src_path}")
         compile_to_wiki(Path(event.src_path))
 
 
@@ -58,7 +58,7 @@ def run_safe_iteration():
         new_content = parsed.get("content", "")
 
         if new_content:
-            print(f"\n📋 Evaluating change to {parsed['target']}...")
+            print(f"\n[EVAL] Evaluating change to {parsed['target']}...")
             eval_result = score_change(
                 new_content, ["clarity", "grounding", "coverage", "backlinks"]
             )
@@ -110,7 +110,7 @@ Follow the closed-loop pipeline:
 - Evaluate your own changes: does it improve clarity, reduce duplication, add useful connections?
 """)
 
-    print("🚀 EvoKB Autoresearch Librarian started")
+    print("[INFO] EvoKB Autoresearch Librarian started")
     print("Drop files into raw/ folder.\n")
 
     event_handler = RawHandler()

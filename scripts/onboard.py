@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def check_python():
-    print("🐍 Checking Python version...")
+    print("[PYTHON] Checking Python version...")
     v = sys.version_info
     if v.major >= 3 and v.minor >= 9:
         print(f"   ✅ Python {v.major}.{v.minor}.{v.micro}")
@@ -17,7 +17,7 @@ def check_python():
 
 
 def check_dependencies():
-    print("\n📦 Checking dependencies...")
+    print("\n[DEPS] Checking dependencies...")
     try:
         import litellm
 
@@ -38,7 +38,7 @@ def check_dependencies():
 
 
 def setup_directories():
-    print("\n📁 Setting up directories...")
+    print("\n[DIR] Setting up directories...")
     dirs = ["raw", "wiki", "clusters"]
     for d in dirs:
         Path(d).mkdir(exist_ok=True)
@@ -56,7 +56,7 @@ def check_config():
 
 
 def check_schema():
-    print("\n📋 Checking schema...")
+    print("\n[CFG] Checking schema...")
     if Path("EVOKB_SCHEMA.md").exists():
         print("   ✅ EVOKB_SCHEMA.md exists")
     else:
@@ -66,7 +66,7 @@ def check_schema():
 
 
 def create_sample():
-    print("\n📝 Creating sample source...")
+    print("\n[FILE] Creating sample source...")
     sample = Path("raw/sample.md")
     if sample.exists():
         print("   ✅ sample.md already exists")
@@ -87,7 +87,7 @@ Sources: https://en.wikipedia.org/wiki/Knowledge_graph
 
 
 def check_ollama():
-    print("\n🤖 Checking Ollama...")
+    print("\n[OLLAMA] Checking Ollama...")
     try:
         import requests
 
@@ -109,7 +109,7 @@ def check_ollama():
 
 def main():
     print("=" * 50)
-    print("🚀 EvoKB Onboarding Wizard")
+    print("[INFO] EvoKB Onboarding Wizard")
     print("=" * 50)
 
     checks = [
@@ -127,7 +127,7 @@ def main():
         results.append(check())
 
     print("\n" + "=" * 50)
-    print("📊 Setup Status")
+    print("[STATS] Setup Status")
     print("=" * 50)
 
     if all(results):

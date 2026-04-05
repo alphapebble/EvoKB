@@ -209,7 +209,7 @@ def run_gmail_ingest(
     labels: List[str] = None, search: str = None, max_results: int = 50
 ):
     """Main Gmail ingest function."""
-    print("📧 EvoKB Gmail Ingest")
+    print("[MAIL] EvoKB Gmail Ingest")
     print("=" * 40)
 
     if not GOOGLE_AVAILABLE:

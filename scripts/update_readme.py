@@ -15,8 +15,8 @@ if search_mrr == 0 and "search" in m:
 qa_pct = qa_accuracy * 100
 mrr_pct = search_mrr * 100
 
-qa_badge = "🟢" if qa_pct >= 50 else "🟡" if qa_pct >= 30 else "🔴"
-mrr_badge = "🟢" if mrr_pct >= 80 else "🟡" if mrr_pct >= 50 else "🔴"
+qa_badge = "[PASS]" if qa_pct >= 50 else "[WARN]" if qa_pct >= 30 else "[FAIL]"
+mrr_badge = "[PASS]" if mrr_pct >= 80 else "[WARN]" if mrr_pct >= 50 else "[FAIL]"
 
 with open("eval/README.md", "w") as f:
     f.write(f"""# Evaluation Results

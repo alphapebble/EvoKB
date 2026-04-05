@@ -9,6 +9,8 @@ from evokb.core.utils import read_file, list_files, ensure_dir
 from evokb.core.config import MODEL, RAW_DIR, WIKI_DIR, PROGRAM_MD
 from evokb.eval.indexer import update_index_and_log
 from evokb.eval.provenance import track_source
+from evokb.agents.hermes import Hermes
+from evokb.core.config import LINT_ON_INGEST, EVAL_CONFIG
 
 MAX_SAMPLES = 8
 MAX_ROUNDS = 3
@@ -209,7 +211,34 @@ created: "{datetime.now().isoformat()}"
     # Update index and log
     update_index_and_log(wiki_dir)
 
+    # Run Hermes review gate if enabled
+    if LINT_ON_INGEST:
+        _run_hermes_review(output_file)
+
     return wiki_content
+
+
+def _run_hermes_review(wiki_file: Path):
+    """Run Hermes review on a compiled wiki file."""
+    try:
+        hermes = Hermes()
+        content = wiki_file.read_text()
+        result = hermes.review_article(wiki_file.name, content)
+
+        if result["decision"] == "promote":
+            print(
+                f"[HERMES] Approved: {wiki_file.name} (score: {result['scores']['total']:.2f})"
+            )
+        elif result["decision"] == "needs_review":
+            print(
+                f"[HERMES] Needs review: {wiki_file.name} (score: {result['scores']['total']:.2f})"
+            )
+        else:
+            print(
+                f"[HERMES] Rejected: {wiki_file.name} (score: {result['scores']['total']:.2f})"
+            )
+    except Exception as e:
+        print(f"[WARN] Hermes review failed: {e}")
 
 
 def query_evo_kb(query: str, wiki_dir: Path = None):
@@ -282,8 +311,8 @@ You are the EvoKB Librarian — an expert research assistant that maintains a hi
 See EVOKB_SCHEMA.md for full schema.
 """)
 
-    print("🚀 EvoKB Autoresearch Librarian starting...")
-    print("Drop files into raw/ folder.\n")
+    print("[INFO] EvoKB Autoresearch Librarian starting...")
+    print("[INFO] Drop files into raw/ folder.\n")
 
     iteration = 0
     while True:

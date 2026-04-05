@@ -33,7 +33,7 @@ def daily_summary():
         "routing_stats": learning.get_successful_routes(),
     }
 
-    print(f"📊 Daily Summary ({summary['date']})")
+    print(f"[STATS] Daily Summary ({summary['date']})")
     print(f"  Notes: {summary['notes_created']}")
     print(f"  People: {summary['people_count']}")
     print(f"  Projects: {summary['projects_count']}")
@@ -52,7 +52,7 @@ def weekly_review():
 
     stats = learning.get_successful_routes()
 
-    print(f"📅 Weekly Review")
+    print(f"[SCHED] Weekly Review")
     print(f"  Total queries: {len(recent)}")
     print(f"  Routing performance:")
     for route, rate in stats.items():
@@ -70,7 +70,7 @@ def wiki_compile():
     """Run incremental wiki compilation."""
     from scripts.compile import run_compiler
 
-    print("🔄 Running wiki compilation...")
+    print("[SYNC] Running wiki compilation...")
     run_compiler()
     print("✓ Wiki compilation complete")
 
@@ -86,7 +86,7 @@ def memory_cleanup():
     old_threshold = datetime.now() - timedelta(days=90)
 
     # Could add logic to archive old notes
-    print(f"📦 Memory cleanup: {len(notes)} notes in database")
+    print(f"[DEPS] Memory cleanup: {len(notes)} notes in database")
     print("  (No old notes to archive yet)")
 
 
@@ -124,7 +124,7 @@ def run_scheduled_job(job_name: str):
 
 def run_all_jobs():
     """Run all scheduled jobs."""
-    print("\n🚀 Running all scheduled jobs...")
+    print("\n[INFO] Running all scheduled jobs...")
 
     daily_summary()
     print()

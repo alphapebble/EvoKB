@@ -175,7 +175,7 @@ Imported from Notion on {datetime.now().isoformat()}
 
 def run_notion_ingest(database_id: str = None, filter_tags: List[str] = None):
     """Main Notion ingest function."""
-    print("📝 EvoKB Notion Ingest")
+    print("[FILE] EvoKB Notion Ingest")
     print("=" * 40)
 
     if not NOTION_AVAILABLE:

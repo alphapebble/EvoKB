@@ -52,14 +52,14 @@ def print_metrics_table(results: Dict[str, Any]):
     print("=" * 60)
 
     if "search_avg_mrr" in results:
-        print(f"\n📊 Search (MRR): {results['search_avg_mrr']}")
+        print(f"\n[SEARCH] MRR: {results['search_avg_mrr']}")
         for s in results.get("search", [])[:5]:
             print(
                 f"  - {s['query'][:40]}: {s['metrics'].get('result_count', 0)} results"
             )
 
     if "qa_avg_score" in results:
-        print(f"\n💬 Q&A Accuracy: {results['qa_avg_score']}")
+        print(f"\n[QA] Accuracy: {results['qa_avg_score']}")
 
     print("\n" + "=" * 60)
 

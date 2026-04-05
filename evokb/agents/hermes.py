@@ -174,7 +174,7 @@ reviewed_at: {datetime.now().isoformat()}
 
 def run_hermes():
     """Run Hermes review on all drafts."""
-    print("🔍 Running Hermes review...")
+    print("[INFO] Running Hermes review...")
 
     hermes = Hermes()
     results = hermes.review_all_drafts()
