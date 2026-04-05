@@ -1,0 +1,64 @@
+# EvoKB Configuration
+
+# Model settings
+model: "ollama/llama3.2"
+ollama_base_url: "http://localhost:11434"
+
+# Directory settings
+raw_dir: "raw"
+wiki_dir: "wiki"
+clusters_dir: "clusters"
+schema_file: "EVOKB_SCHEMA.md"
+
+# Polling interval (seconds)
+check_interval: 8
+
+# Connectors
+connectors:
+  gmail:
+    enabled: false
+    labels:
+      - newsletter
+      - tech
+    max_results: 50
+  
+  notion:
+    enabled: false
+    database_id: ""
+    filter_property: "Status"
+    filter_value: "Published"
+  
+  slack:
+    enabled: false
+    workspace: ""
+    channels:
+      - general
+      - random
+  
+  discord:
+    enabled: false
+    server_id: ""
+    channels:
+      - general
+
+# Ingest settings
+ingest:
+  file_types:
+    - ".md"
+    - ".txt"
+    - ".pdf"
+  url_patterns:
+    - "arxiv.org"
+    - "wikipedia.org"
+    - "wiki"
+  max_file_size_mb: 10
+
+# Search settings
+search:
+  use_tantivy: false  # Future: use Tantivy for full-text search
+  max_results: 10
+
+# Eval settings
+eval:
+  lint_on_ingest: true
+  min_quality_score: 0.7
