@@ -155,10 +155,14 @@ def compile_to_wiki(raw_path: Path, wiki_dir: Path = None) -> str:
 
     prompt = f"""You are an expert research librarian.
 Turn the following raw document into a clean, structured Markdown wiki page.
-- Add frontmatter with title, tags, summary, last_updated, related_pages
-- Use clear headings
-- Extract key claims and evidence
-- Suggest 3-5 backlinks to other potential wiki pages
+
+CRITICAL REQUIREMENTS:
+1. Add frontmatter with: title, tags, summary, sources, last_updated
+2. NEVER invent facts - only write what is explicitly in the source
+3. Mark any unverified claims with [UNVERIFIED] tag
+4. Include all sources in frontmatter
+5. Extract key claims that can be traced to source content
+
 Raw content:
 {content[:15000]}
 """
@@ -169,6 +173,26 @@ Raw content:
         temperature=0.7,
     )
     wiki_content = response.choices[0].message.content
+
+    # Add source reference if raw file is source
+    if wiki_content.startswith("---"):
+        # Already has frontmatter, append source
+        parts = wiki_content.split("---", 2)
+        if len(parts) >= 3:
+            frontmatter = parts[1]
+            if "source:" not in frontmatter.lower():
+                frontmatter += f'\nsource: "{raw_path.name}"'
+            wiki_content = "---" + frontmatter + "---" + parts[2]
+    else:
+        # Add frontmatter
+        fm = f"""---
+title: "{raw_path.stem}"
+source: "{raw_path.name}"
+created: "{datetime.now().isoformat()}"
+---
+
+"""
+        wiki_content = fm + wiki_content
 
     # Save to wiki
     output_file = wiki_dir / raw_path.name
