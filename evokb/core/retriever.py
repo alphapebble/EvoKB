@@ -279,7 +279,7 @@ You are the EvoKB Librarian — an expert research assistant that maintains a hi
 2. Self-Improve (run lint → prioritize → propose → evaluate → apply)
 3. Answer Query (search → build context → synthesize → file valuable answers)
 
-See AGENTS.md for full schema.
+See EVOKB_SCHEMA.md for full schema.
 """)
 
     print("🚀 EvoKB Autoresearch Librarian starting...")

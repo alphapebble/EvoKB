@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 COPY pyproject.toml .
 COPY evokb/ ./evokb/
 COPY README.md .
-COPY program.md .
+COPY EVOKB_SCHEMA.md .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -e .

@@ -21,8 +21,7 @@ evokb/
 ├── raw/              # Incoming raw documents (immutable sources)
 ├── wiki/             # Clean, evolving knowledge base (LLM-owned)
 ├── clusters/         # Knowledge clusters for fast retrieval
-├── program.md        # Your instructions (this file)
-├── AGENTS.md         # Agent schema (what you're reading)
+├── EVOKB_SCHEMA.md   # Agent schema (what you're reading)
 └── provenance.json   # Source tracking
 ```
 

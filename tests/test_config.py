@@ -35,4 +35,4 @@ def test_config_clusters_dir():
 def test_config_program_md():
     from evokb.core.config import PROGRAM_MD
 
-    assert PROGRAM_MD == Path("AGENTS.md")
+    assert PROGRAM_MD == Path("EVOKB_SCHEMA.md")

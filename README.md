@@ -56,7 +56,7 @@ evokb/
 ├── raw/              # Incoming raw documents
 ├── wiki/             # Clean, evolving knowledge base
 ├── clusters/         # Knowledge clusters for fast retrieval
-├── program.md        # Librarian instructions
+├── EVOKB_SCHEMA.md   # Agent schema
 ├── evokb/
 │   ├── __init__.py
 │   ├── api.py        # FastAPI server
