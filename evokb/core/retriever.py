@@ -7,6 +7,8 @@ from litellm import completion
 from evokb.memory.cluster import KnowledgeCluster, ClusterStore
 from evokb.core.utils import read_file, list_files, ensure_dir
 from evokb.core.config import MODEL, RAW_DIR, WIKI_DIR, PROGRAM_MD
+from evokb.eval.indexer import update_index_and_log
+from evokb.eval.provenance import track_source
 
 MAX_SAMPLES = 8
 MAX_ROUNDS = 3
@@ -198,6 +200,14 @@ created: "{datetime.now().isoformat()}"
     output_file = wiki_dir / raw_path.name
     output_file.write_text(wiki_content)
     print(f"Saved wiki page: {output_file}")
+
+    # Track provenance
+    track_source(
+        file_name=raw_path.name, source=raw_path.name, source_type="file", query=None
+    )
+
+    # Update index and log
+    update_index_and_log(wiki_dir)
 
     return wiki_content
 
